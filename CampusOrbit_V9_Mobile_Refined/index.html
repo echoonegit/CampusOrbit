@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Campus Orbit — Mobile Campus Navigation</title>
+<style>
+:root{--bg:#060914;--panel:#0b1020e8;--panel2:#11182be8;--line:#273454;--text:#f5f7ff;--muted:#9ba8c4;--cyan:#4de8ff;--violet:#9b7cff;--pink:#ff63c3;--green:#5cffaa;--yellow:#ffd166;--orange:#ff9d5c}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:Inter,ui-sans-serif,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 65% 15%,#182552 0,#0a1022 34%,#060914 70%);color:var(--text);overflow:hidden}
+button,input,select{font:inherit}.app{height:100vh;display:grid;grid-template-columns:330px 1fr;grid-template-rows:72px 1fr}.glass{background:linear-gradient(145deg,#10182be8,#080e1be8);border:1px solid #263452;box-shadow:0 18px 60px #0007, inset 0 1px #ffffff0b;backdrop-filter:blur(14px)}
+header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #273454;background:#070b16dd;backdrop-filter:blur(18px);z-index:100}.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:conic-gradient(from 210deg,var(--cyan),var(--violet),var(--pink),var(--cyan));box-shadow:0 0 28px #4de8ff55;color:#060914;font-weight:1000;font-size:21px}.brand h1{font-size:19px;margin:0;letter-spacing:.02em}.brand p{font-size:11px;color:var(--muted);margin:3px 0 0}.headerRight{display:flex;align-items:center;gap:9px}.badge{font-size:11px;border:1px solid #285a56;background:#0a211b;color:var(--green);padding:7px 10px;border-radius:999px}.mode{font-size:11px;color:#d8dcff;border:1px solid #3d356d;background:#17112d;padding:7px 10px;border-radius:999px}
+aside{padding:16px;overflow:auto;border-right:1px solid #273454;background:linear-gradient(180deg,#080d19,#080b14)}.section{margin-bottom:14px}.sectionTitle{display:flex;align-items:center;justify-content:space-between;color:#dce4ff;font-size:11px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}.sectionTitle span{color:#64708d;font-size:9px}.field{margin:7px 0}.field label{display:block;font-size:10px;color:var(--muted);margin:0 0 5px}.control{width:100%;border:1px solid #2c3a5b;background:#0b1222;color:var(--text);padding:10px 11px;border-radius:10px;outline:none}.control:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #4de8ff14}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.btn{border:1px solid #2d3b5b;background:#111a2d;color:#eaf0ff;padding:9px 10px;border-radius:10px;cursor:pointer;transition:.18s;white-space:nowrap}.btn:hover{transform:translateY(-1px);border-color:#52698e;background:#18243c}.btn.primary{background:linear-gradient(135deg,#4de8ff1c,#9b7cff30);border-color:#4de8ff77;color:#eaffff;box-shadow:0 0 20px #4de8ff0d}.btn.access{border-color:#38765e;background:#0d241d;color:#baffdc}.btn.active{border-color:var(--cyan);background:#4de8ff18}.info{padding:12px;border-radius:12px;background:#0b1221;border:1px solid #263454;font-size:11px;line-height:1.55;color:#b9c4da}.info b{color:#fff}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;color:#98a6c1;font-size:10px}.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}.tip{font-size:10px;color:#6f7c97;line-height:1.45}
+main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-index:30;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none}.hud>*{pointer-events:auto}.search{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;width:290px}.search input{border:0;background:transparent;outline:0;color:#fff;width:100%;font-size:12px}.search input::placeholder{color:#77839d}.quick{display:flex;gap:7px}.chip{border:1px solid #2a3754;background:#0a1020dd;color:#cbd4e8;padding:8px 10px;border-radius:10px;font-size:10px;cursor:pointer}.chip:hover{border-color:#4de8ff77;color:#fff}.viewBtns{position:absolute;right:14px;top:64px;z-index:31;display:flex;gap:6px}.viewBtns button{border:1px solid #2a3754;background:#0a1020dd;color:#dce4ff;padding:8px 10px;border-radius:9px;font-size:10px;cursor:pointer}.viewBtns button:hover{border-color:#4de8ff}
+.scene{height:100%;display:grid;place-items:center;perspective:1200px;overflow:hidden;cursor:grab}.scene.dragging{cursor:grabbing}.world{position:relative;width:min(980px,82vw);height:650px;transform-style:preserve-3d;transform:rotateX(56deg) rotateZ(-12deg) scale(.78);transition:transform .35s ease}.world.noTransition{transition:none}.campusBase{position:absolute;left:4%;top:4%;width:92%;height:92%;border-radius:28px;background:linear-gradient(145deg,#101b2b,#0d1828);border:1px solid #34435f;box-shadow:0 50px 100px #000a,0 0 80px #4de8ff0b inset;transform:translateZ(-25px);transform-style:preserve-3d}.innerGround{position:absolute;left:5%;top:7%;width:90%;height:86%;border-radius:22px;background:linear-gradient(145deg,#132b28,#11251f);border:1px solid #2c574e;box-shadow:inset 0 0 80px #54ffbf08}.road{position:absolute;background:#202837;border:1px solid #3a4658;box-shadow:0 4px 0 #0005}.rTop{left:0;right:0;top:2%;height:34px}.rBottom{left:0;right:0;bottom:2%;height:34px}.rLeft{left:2%;top:2%;bottom:2%;width:34px}.rRight{right:2%;top:2%;bottom:2%;width:34px}.roadCenter{position:absolute;left:5%;right:5%;top:49%;height:3px;background:#ffd16666;box-shadow:0 0 12px #ffd16633}.gate{position:absolute;font-weight:900;font-size:12px;letter-spacing:.08em;color:#fff;text-shadow:0 2px 8px #000}.g1{left:47%;bottom:-4%}.g2{right:-3%;top:47%}.g3{left:-3%;top:31%}.g4{left:47%;top:-4%}
+.bld{position:absolute;transform-style:preserve-3d;border-radius:8px;border:1px solid #6f6d87;background:linear-gradient(145deg,#7460a9,#42385f);box-shadow:10px 14px 0 #0007,0 0 0 1px #ffffff10 inset,0 0 24px #9b7cff18;cursor:pointer;transition:transform .2s,filter .2s}.bld:hover{filter:brightness(1.2);transform:translateZ(12px)}.bld .roof{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:900;color:#fff;text-shadow:0 2px 7px #000;font-size:15px}.bld .sub{font-size:8px;color:#cfd4ee;font-weight:600;margin-top:3px}.bld:after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:#302b45;border:1px solid #4b4661;transform:skewX(40deg);transform-origin:top}.ab1{left:53%;top:49%;width:235px;height:142px;background:linear-gradient(145deg,#4de8ff55,#7258ba)}.ab2{left:31%;top:50%;width:118px;height:88px}.mr{left:20%;top:64%;width:104px;height:70px;background:linear-gradient(145deg,#ff63c34c,#674f99)}.caf{left:21%;top:76%;width:72px;height:44px;background:linear-gradient(145deg,#ff9d5c66,#78513f)}.groundB{left:34%;top:34%;width:132px;height:76px;background:linear-gradient(145deg,#5cffaa33,#396b60)}.bba{left:14%;top:14%;width:142px;height:72px}.boysNew{left:13%;top:32%;width:88px;height:57px}.boys{left:54%;top:28%;width:102px;height:63px}.girls{left:45%;top:10%;width:215px;height:60px}.workshop{left:76%;top:27%;width:152px;height:74px;background:linear-gradient(145deg,#ffd16666,#755f3d)}.accounts{left:48%;top:58%;width:48px;height:92px;background:linear-gradient(145deg,#5cffaa44,#365f55)}.stationery{left:77%;top:20%;width:82px;height:25px;background:#604f8c}.shed{left:88%;top:58%;width:40px;height:86px;background:#38455b}.court{width:42px;height:26px;border-radius:4px;background:#1c4d52;border-color:#3ca3a4}.mfc{left:70%;top:18%}.bg{left:76%;top:18%}.bc{left:82%;top:18%}.vbc{left:89%;top:18%;width:48px}.parking{left:72%;top:76%;width:160px;height:52px;background:repeating-linear-gradient(45deg,#4a515d 0 8px,#303640 8px 16px);border-color:#727b8d}.tag{position:absolute;z-index:8;transform:translateZ(18px);font-size:9px;color:#dfe7f7;background:#070c17dd;border:1px solid #384760;padding:4px 6px;border-radius:7px;white-space:nowrap;pointer-events:none}.tAb1{left:58%;top:44%}.tAb2{left:34%;top:46%}.tMr{left:18%;top:62%}.skywalk{position:absolute;left:36%;top:47%;width:215px;height:10px;background:linear-gradient(90deg,#4de8ff,#9b7cff);box-shadow:0 0 20px #4de8ff88;transform:translateZ(12px);border-radius:10px}.skyLabel{left:39%;top:44%}.route{position:absolute;height:7px;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 16px #4de8ff,0 0 30px #5cffaa66;transform-origin:left center;z-index:22;display:none}.route:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#fff0 0 16px,#ffffffcc 17px 21px);animation:flow .65s linear infinite;border-radius:99px}@keyframes flow{to{background-position:21px 0}}.node{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 20px var(--cyan);z-index:23;display:none}
+.floors{position:absolute;left:54%;top:50%;width:235px;height:142px;transform-style:preserve-3d;display:none;z-index:40}.floor{position:absolute;width:235px;height:142px;background:#17233b;border:1px solid #4de8ff88;box-shadow:10px 12px 0 #0008,0 0 30px #4de8ff18;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:2px;padding:6px;cursor:pointer}.floor span{background:#293753;border:1px solid #465777;color:#eaf0ff;border-radius:3px;font-size:7px;display:grid;place-items:center;text-align:center;padding:2px;overflow:hidden}.floor span:hover{background:#4de8ff33;border-color:#4de8ff}.f0{transform:translate(-50%,-50%) translateZ(0)}.f1{transform:translate(-50%,-50%) translateZ(42px) translateY(-14px)}.f2{transform:translate(-50%,-50%) translateZ(84px) translateY(-28px)}.f3{transform:translate(-50%,-50%) translateZ(126px) translateY(-42px)}.f4{transform:translate(-50%,-50%) translateZ(168px) translateY(-56px)}.marker{position:absolute;width:14px;height:14px;border-radius:50%;display:grid;place-items:center;font-size:7px;font-weight:900;color:#07101b;background:var(--yellow);box-shadow:0 0 13px #ffd166;border:2px solid #fff}.lift{background:var(--violet);box-shadow:0 0 13px #9b7cff}.room418{background:#fff;box-shadow:0 0 20px #fff;color:#111}
+.panel{position:absolute;z-index:50;right:16px;bottom:16px;width:330px;padding:15px;border-radius:15px;display:none}.panel h3{margin:0 0 5px;font-size:15px}.panel p{margin:0;color:#aab6cc;font-size:11px;line-height:1.55}.close{float:right;background:none;border:0;color:#8d9ab5;font-size:20px;cursor:pointer}.toast{position:absolute;z-index:60;left:50%;bottom:18px;transform:translateX(-50%);padding:10px 15px;border-radius:999px;background:#0a1020ee;border:1px solid #3b4b6d;color:#e9efff;font-size:11px;display:none;box-shadow:0 10px 35px #0007}.stats{position:absolute;left:14px;bottom:14px;z-index:25;display:flex;gap:7px}.stat{padding:8px 10px;border-radius:10px;font-size:9px;color:#b9c4da}.stat b{color:#fff;font-size:11px;margin-right:3px}.presentation{position:absolute;z-index:70;inset:0;background:#050812f7;display:none;align-items:center;justify-content:center;padding:5vw}.presentation .pbox{max-width:900px;text-align:center}.presentation h2{font-size:46px;margin:0;background:linear-gradient(90deg,var(--cyan),#fff,var(--pink));-webkit-background-clip:text;color:transparent}.presentation p{color:#aebbd2}.presentation .bigRoute{font-size:22px;margin:30px 0;color:#fff}.presentation .closeP{margin-top:15px}
+@media(max-width:950px){.app{grid-template-columns:1fr;grid-template-rows:72px auto 1fr}aside{max-height:330px;border-right:0;border-bottom:1px solid #273454}.scene{height:calc(100vh - 402px);min-height:500px}.world{transform:rotateX(55deg) rotateZ(-12deg) scale(.58)}.stats{display:none}.search{width:210px}.quick{display:none}}
+
+/* V4 enhancements */
+.v4dock{position:absolute;right:14px;bottom:18px;z-index:60;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:520px}.v4dock button{border:1px solid #344767;background:#091224e8;color:#eaf4ff;padding:10px 13px;border-radius:12px;font-size:11px;cursor:pointer;box-shadow:0 10px 30px #0006}.v4dock button:hover{border-color:#4de8ff;transform:translateY(-1px)}
+.videoModal,.refModal{position:absolute;inset:0;z-index:200;display:none;place-items:center;background:#02050bdd;backdrop-filter:blur(14px);padding:28px}.modalCard{width:min(1000px,94vw);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#101a30,#070c18);border:1px solid #344767;border-radius:24px;box-shadow:0 30px 100px #000b;padding:18px}.modalTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modalTop h2{margin:0;font-size:18px}.x{border:1px solid #354564;background:#111b2d;color:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer}.demoVideo{width:100%;border-radius:16px;border:1px solid #2e4162;background:#000;display:block}.modalNote{font-size:11px;color:#8f9db7;margin:10px 2px 0;line-height:1.5}.refImg{width:100%;border-radius:14px;border:1px solid #334766;background:#fff}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.step{padding:10px;border:1px solid #2d3e5d;border-radius:12px;background:#0b1425}.step b{display:block;font-size:11px;color:#fff;margin-bottom:4px}.step span{font-size:10px;color:#8e9bb6}.compass{position:absolute;left:14px;bottom:18px;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#081021d9;border:1px solid #344767;box-shadow:0 12px 35px #0008;color:#dfeaff;font-size:10px}.compass:before{content:'N';position:absolute;top:5px;color:#4de8ff;font-weight:900}.compass:after{content:'✦';font-size:19px;color:#fff}.pulseDot{position:absolute;width:12px;height:12px;border-radius:50%;background:#4de8ff;box-shadow:0 0 0 0 #4de8ff88;animation:pulseV4 1.8s infinite;z-index:25}@keyframes pulseV4{0%{box-shadow:0 0 0 0 #4de8ff88}70%{box-shadow:0 0 0 18px #4de8ff00}100%{box-shadow:0 0 0 0 #4de8ff00}}
+@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:64px auto 1fr}aside{display:none}.steps{grid-template-columns:1fr 1fr}.v4dock{bottom:10px}.compass{bottom:10px}}
+
+/* V5 */
+.floorModal{position:fixed;inset:0;z-index:500;display:none;background:radial-gradient(circle at 50% 20%,#17284b,#070b15 62%);color:#f6f8ff}.floorModal.open{display:flex;flex-direction:column;animation:fi .22s ease}@keyframes fi{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+.fmTop{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #293957;background:#070b15f5;flex-shrink:0}.fmBrand{display:flex;align-items:center;gap:12px}.fmBack,.fmActions button{border:1px solid #30415f;background:#101a2d;color:#dce8ff;border-radius:10px;padding:9px 12px;cursor:pointer}.fmBack:hover,.fmActions button:hover{border-color:#4de8ff}.fmTitle{font-size:18px;font-weight:900}.fmSub{font-size:10px;color:#8493b2;margin-top:3px}.fmActions{display:flex;gap:7px;align-items:center}.fmBadge{font-size:9px;border:1px solid #2b4b62;background:#0c2030;color:#91e9ff;border-radius:999px;padding:6px 9px}.fmBody{display:grid;grid-template-columns:180px minmax(0,1fr) 280px;flex:1;min-height:0}.fmFloors{padding:18px 14px;border-right:1px solid #263654;background:#090f1d;overflow:auto}.fmFloors h4{margin:0 0 12px;font-size:10px;letter-spacing:.14em;color:#8090b1;text-transform:uppercase}.floorBtn{width:100%;text-align:left;padding:13px 12px;margin-bottom:8px;border-radius:11px;border:1px solid #293957;background:#0e1728;color:#cdd8ed;cursor:pointer}.floorBtn:hover{border-color:#4de8ff}.floorBtn.active{background:linear-gradient(135deg,#16384a,#24204b);border-color:#4de8ff;color:#fff;box-shadow:0 0 22px #4de8ff14}.floorBtn b{display:block;font-size:12px}.floorBtn span{display:block;font-size:9px;color:#7483a0;margin-top:3px}.fmCanvas{position:relative;overflow:auto;display:grid;place-items:center;padding:35px;background:radial-gradient(circle,#15213a,#0b1221 52%,#070b14)}.floorPlan{position:relative;width:min(860px,82vw);height:min(650px,74vh);min-width:680px;min-height:520px;background:#c8ced5;border:5px solid #7d8794;border-radius:8px;box-shadow:0 30px 90px #000b;overflow:hidden}.fpHeader{position:absolute;left:0;right:0;top:0;height:55px;background:#eef1f4;color:#172033;display:grid;place-items:center;font-weight:900;font-size:20px;border-bottom:3px solid #8994a2}.fpHeader small{display:block;font-size:9px;color:#657083;text-align:center}.fpCorridor{position:absolute;left:48%;top:55px;bottom:0;width:9%;background:#dfe3e7;border-left:2px solid #919aa6;border-right:2px solid #919aa6}.fpRoom{position:absolute;background:#3c3030;color:#f7f0e7;border:2px solid #d7dde3;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:10px;line-height:1.05;padding:3px;cursor:pointer;transition:.15s;overflow:hidden}.fpRoom:hover{transform:scale(1.02);z-index:5;border-color:#4de8ff}.fpRoom.selected{background:#0e5360;border-color:#4de8ff;box-shadow:0 0 0 3px #4de8ff55,0 0 30px #4de8ff66;z-index:10}.fpRoom span{font-size:8px;color:#ffd98b;margin-bottom:2px}.fpRoom small{font-size:7px;color:#d9e2ef}.fpStair{position:absolute;width:54px;height:72px;background:repeating-linear-gradient(0deg,#c88b2d 0 5px,#f1c86d 5px 9px);border:3px solid #6e4a16;color:#251b0b;display:grid;place-items:center;font-weight:900;font-size:9px;text-align:center;z-index:8;box-shadow:0 5px 12px #0005}.fpLift{position:absolute;width:58px;height:58px;background:#2f75b5;border:3px solid #a9d9ff;color:white;display:grid;place-items:center;font-weight:900;font-size:10px;border-radius:5px;z-index:8}.fpRoute{position:absolute;height:8px;background:linear-gradient(90deg,#00c6ff,#5cffaa);box-shadow:0 0 18px #00c6ff;z-index:20;border-radius:99px;display:none;transform-origin:left center}.fpRoute:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 13px,#fff 14px 18px);animation:flow2 .6s linear infinite;border-radius:99px}@keyframes flow2{to{background-position:18px 0}}.fpLegend{position:absolute;left:16px;bottom:12px;background:#ffffffea;color:#293244;border:1px solid #a9b2bd;border-radius:7px;padding:7px 9px;font-size:8px;display:flex;gap:10px;z-index:30}.fpLegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-2px}.fmInfo{padding:18px;border-left:1px solid #263654;background:#090f1d;overflow:auto}.fmCard{background:#0d1627;border:1px solid #293957;border-radius:13px;padding:13px;margin-bottom:10px}.fmCard h3{margin:0 0 7px;font-size:13px}.fmCard p{margin:0;color:#9eacc6;font-size:10px;line-height:1.55}.fmSearch{width:100%;border:1px solid #30415f;background:#0b1322;color:#fff;border-radius:10px;padding:10px;outline:0}.fmSearch:focus{border-color:#4de8ff}.roomResult{margin-top:8px;padding:9px;border-radius:9px;background:#111d31;border:1px solid #2b3c5b;font-size:10px;cursor:pointer}.roomResult:hover{border-color:#4de8ff}.routeChoice{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.routeChoice button{padding:8px;border-radius:8px;border:1px solid #30415f;background:#111b2e;color:#cfe0f5;cursor:pointer}.floorNote{font-size:9px;color:#7786a1;line-height:1.5;margin-top:8px}.tip2{font-size:9px;color:#7786a1}@media(max-width:1000px){.fmBody{grid-template-columns:135px minmax(0,1fr)}.fmInfo{display:none}.floorPlan{min-width:650px}}@media(max-width:700px){.fmBody{grid-template-columns:100px minmax(0,1fr)}.floorPlan{min-width:600px}.fmActions .fmBadge{display:none}}
+
+/* ===== V6 ADDITIONS: preserve V5, add depth instead of replacing it ===== */
+.ab1Mode{position:fixed;inset:0;z-index:500;display:none;background:radial-gradient(circle at 50% 35%,#18284f 0,#080d1a 58%,#050812 100%);}
+.ab1Mode.open{display:block}.ab1Top{height:74px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #29395a;background:#070c17e8;backdrop-filter:blur(16px)}
+.ab1Top h2{margin:0;font-size:18px}.ab1Top p{margin:4px 0 0;color:#8290ad;font-size:10px}.ab1Actions{display:flex;gap:7px;align-items:center}.ab1Actions button{border:1px solid #31405e;background:#0e1628;color:#eaf1ff;border-radius:9px;padding:9px 11px;cursor:pointer;font-size:10px}.ab1Actions button:hover{border-color:#4de8ff}.ab1Stage{height:calc(100% - 74px);display:grid;grid-template-columns:1fr 290px;min-height:0}.ab1Viewer{position:relative;overflow:hidden;display:grid;place-items:center;cursor:grab}.ab1Viewer.dragging{cursor:grabbing}.ab1World{position:relative;width:620px;height:480px;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-18deg) scale(.86);transition:transform .25s ease}.ab1Ground{position:absolute;left:35px;top:45px;width:550px;height:390px;border-radius:18px;background:linear-gradient(145deg,#101d2c,#0b1623);border:1px solid #40516e;box-shadow:0 40px 80px #000b;transform:translateZ(-28px)}
+.floorSlab{position:absolute;left:100px;width:420px;height:250px;border:1px solid #6d7da0;background:linear-gradient(145deg,#1b2d47,#102039);box-shadow:13px 15px 0 #0008,0 0 25px #4de8ff12;transform-style:preserve-3d;cursor:pointer}.floorSlab:hover{filter:brightness(1.18)}.floorSlab:before{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:#263653;border:1px solid #425574;transform:skewX(42deg);transform-origin:top}.floorSlab .flabel{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:900;color:#dfe8ff;text-shadow:0 2px 8px #000;font-size:18px}.floorSlab .flabel small{display:block;color:#8ea0bf;font-size:9px;margin-top:5px}.fl0{top:185px;transform:translateZ(0)}.fl1{top:165px;transform:translateZ(42px) translateY(-12px)}.fl2{top:145px;transform:translateZ(84px) translateY(-24px)}.fl3{top:125px;transform:translateZ(126px) translateY(-36px)}.fl4{top:105px;transform:translateZ(168px) translateY(-48px)}
+.stairTower,.liftTower{position:absolute;width:38px;height:44px;border-radius:5px;border:1px solid #d39b45;background:linear-gradient(145deg,#8b6229,#4f3b1e);box-shadow:5px 7px 0 #0007;transform-style:preserve-3d}.liftTower{border-color:#4de8ff;background:linear-gradient(145deg,#246e78,#173b46)}.stairTower:after,.liftTower:after{content:"";position:absolute;inset:5px;border:1px dashed #ffffff55;border-radius:3px}.sA{left:120px;top:150px}.sB{left:462px;top:150px}.sC{left:120px;top:355px}.sD{left:462px;top:355px}.lA{left:286px;top:150px}.lB{left:286px;top:355px}.ab1RoomPin{position:absolute;left:365px;top:216px;width:20px;height:20px;border-radius:50%;background:#ff4fba;border:4px solid #fff;box-shadow:0 0 24px #ff4fba,0 0 0 8px #ff4fba22;transform:translateZ(205px);z-index:30;cursor:pointer}.ab1RoomPin:after{content:"ROOM 418";position:absolute;left:24px;top:-4px;white-space:nowrap;background:#07101fdd;border:1px solid #ff4fba66;color:#fff;padding:5px 7px;border-radius:7px;font-size:9px;font-weight:800}.ab1Legend{padding:18px;border-left:1px solid #273454;background:#090f1d;overflow:auto}.ab1Legend h3{margin:0 0 12px;font-size:12px}.modelStat{padding:11px;border:1px solid #263653;background:#0d1627;border-radius:12px;margin-bottom:9px}.modelStat b{display:block;font-size:11px}.modelStat span{display:block;color:#8795b0;font-size:9px;margin-top:4px;line-height:1.45}.legendDots{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.legendDots span{font-size:9px;color:#aeb9cd}.legendDots i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}.ab1Hint{color:#697793;font-size:9px;line-height:1.5;margin-top:12px}
+.routeSvg{position:absolute;inset:0;width:100%;height:100%;z-index:21;pointer-events:none;overflow:visible}.routePath{fill:none;stroke:#4de8ff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:12 9;filter:drop-shadow(0 0 7px #4de8ff);animation:routeDash .65s linear infinite}.routePath.accessible{stroke:#5cffaa;filter:drop-shadow(0 0 7px #5cffaa)}@keyframes routeDash{to{stroke-dashoffset:-21}}.routeDot{fill:#fff;stroke:#4de8ff;stroke-width:5}.routeDot.accessible{stroke:#5cffaa}.routeArrow{fill:#fff}.routeCaption{font-size:10px;fill:#fff;font-weight:800;paint-order:stroke;stroke:#050a12;stroke-width:4px}
+.v6Toolbar{position:absolute;left:14px;bottom:14px;z-index:35;display:flex;gap:7px;flex-wrap:wrap}.v6Toolbar button{border:1px solid #2b3b5a;background:#09111fdd;color:#dbe5f7;border-radius:9px;padding:8px 10px;font-size:9px;cursor:pointer}.v6Toolbar button:hover{border-color:#4de8ff}.accuracyBadge{position:absolute;right:14px;bottom:14px;z-index:35;border:1px solid #3a4661;background:#070d18e8;color:#aeb9ce;border-radius:999px;padding:7px 10px;font-size:9px}.routeInfoBox{margin-top:9px;padding:10px;border:1px solid #263653;background:#0a1220;border-radius:10px;font-size:10px;line-height:1.55;color:#aab6cb}.routeInfoBox b{color:#fff}.routeStepsMini{display:grid;gap:6px;margin-top:8px}.routeStepMini{display:flex;gap:7px;align-items:flex-start}.routeStepMini i{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:#14233a;color:#4de8ff;font-style:normal;font-size:8px;flex:none}.routeStepMini span{font-size:9px;color:#9ba8c0}.featureGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.featureCard{padding:9px;border:1px solid #253451;background:#0c1424;border-radius:10px}.featureCard b{font-size:9px}.featureCard span{display:block;font-size:8px;color:#8492ab;margin-top:3px;line-height:1.4}
+@media(max-width:900px){.ab1Stage{grid-template-columns:1fr}.ab1Legend{display:none}.ab1World{transform:rotateX(58deg) rotateZ(-18deg) scale(.65)}}
+
+/* AB1 INDOOR EXPLORER — enhanced, video-inspired, offline */
+.ab1Explore{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 20%,#17264a 0,#070b16 55%,#03050b 100%);display:none;color:#eef4ff}
+.ab1Explore.open{display:flex;flex-direction:column}
+.ieTop{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #263553;background:#08101ff0;backdrop-filter:blur(18px)}
+.ieBrand{display:flex;gap:12px;align-items:center}.ieLogo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#5de9ff,#8c6bff);display:grid;place-items:center;font-size:20px;font-weight:900;box-shadow:0 0 25px #5de9ff44}
+.ieTitle h2{margin:0;font-size:17px}.ieTitle p{margin:3px 0 0;color:#8292b2;font-size:10px}
+.ieTopBtns{display:flex;gap:7px}.ieTopBtns button{background:#101b30;color:#dce8ff;border:1px solid #304263;border-radius:9px;padding:9px 11px;font-weight:700;cursor:pointer}
+.ieTopBtns button:hover{border-color:#5de9ff;color:#fff}
+.ieBody{flex:1;min-height:0;display:grid;grid-template-columns:235px minmax(0,1fr) 290px}
+.ieSide{background:#08101de8;border-right:1px solid #263553;padding:14px;overflow:auto}.ieSide.right{border-right:0;border-left:1px solid #263553}
+.ieSide h3{font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:#8496b8;margin:5px 0 11px}
+.ieFloorTabs{display:grid;gap:7px}.ieFloorTab{padding:11px 10px;border:1px solid #223451;border-radius:10px;background:#0d1729;color:#cbd8ee;text-align:left;cursor:pointer}
+.ieFloorTab b{display:block;font-size:11px}.ieFloorTab span{display:block;color:#71819f;font-size:9px;margin-top:3px}.ieFloorTab.active{border-color:#4de8ff;background:linear-gradient(135deg,#102b3b,#171a3b);box-shadow:0 0 18px #4de8ff20}
+.ieFloorTab.all.active{border-color:#9b7cff}
+.ieHint{font-size:9px;line-height:1.55;color:#687895;margin-top:12px;padding:9px;border:1px dashed #263553;border-radius:9px}
+.ieCenter{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#16294a55,transparent 48%),linear-gradient(180deg,#08101f,#040811)}
+.ieGrid{position:absolute;inset:0;background-image:linear-gradient(#20345122 1px,transparent 1px),linear-gradient(90deg,#20345122 1px,transparent 1px);background-size:38px 38px;transform:perspective(700px) rotateX(62deg) scale(1.35);transform-origin:center bottom;opacity:.55}
+.ieViewer{position:absolute;inset:0;display:grid;place-items:center;cursor:grab;touch-action:none}.ieViewer.dragging{cursor:grabbing}
+.ieWorld{position:relative;width:590px;height:480px;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.ieWorld.noAnim{transition:none}
+.ieFloor{position:absolute;left:95px;top:55px;width:400px;height:330px;transform-style:preserve-3d;border:1px solid #3e5d88;border-radius:8px;background:#152946;box-shadow:0 25px 35px #0008;transition:transform .5s,opacity .4s,filter .4s}
+.ieFloor:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffffff08 1px,transparent 1px),linear-gradient(#ffffff08 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.ieFloor.hidden{opacity:.10;filter:blur(.5px)}.ieFloor.focused{box-shadow:0 0 0 2px #4de8ff,0 0 35px #4de8ff33}
+.ieFloorHead{position:absolute;left:12px;top:10px;font-size:10px;color:#8ea6ca;z-index:3}.ieFloorHead b{color:#e9f3ff;font-size:12px}.ieFloorHead span{margin-left:7px;color:#637594}
+.ieRoom{position:absolute;border:1px solid #426286;background:linear-gradient(135deg,#203c61,#142744);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#cfe0fa;cursor:pointer;transition:.2s;padding:2px;overflow:hidden;text-align:center}
+.ieRoom:hover{border-color:#62eaff;transform:translateZ(6px);box-shadow:0 0 18px #4de8ff22}.ieRoom small{font-size:7px;color:#7187a8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95%}.ieRoom b{font-size:9px}
+.ieRoom.selected{border-color:#ff58c7;background:linear-gradient(135deg,#522044,#282047);box-shadow:0 0 24px #ff58c755;animation:roomPulse 1.3s infinite}
+@keyframes roomPulse{50%{box-shadow:0 0 8px #ff58c733}}
+.ieConnector{position:absolute;width:38px;height:24px;border-radius:5px;display:grid;place-items:center;font-size:7px;font-weight:900;z-index:4;cursor:pointer;border:1px solid}
+.ieStair{background:#5c4320;border-color:#d8a545;color:#ffd97a}.ieLift{background:#173f49;border-color:#42d7e8;color:#76f5ff}
+.ieConnector.s1{left:-20px;top:58px}.ieConnector.s2{right:-20px;top:58px}.ieConnector.s3{left:-20px;bottom:48px}.ieConnector.s4{right:-20px;bottom:48px}.ieConnector.l1{left:181px;top:20px}.ieConnector.l2{left:181px;bottom:20px}
+.ieConnector:hover{filter:brightness(1.3)}
+.ieRouteLine{position:absolute;height:5px;background:linear-gradient(90deg,#4de8ff,#b46cff,#ff58c7);border-radius:99px;transform-origin:left center;z-index:8;box-shadow:0 0 16px #4de8ff;pointer-events:none;display:none}.ieRouteLine.play{display:block;animation:routeGlow 1.2s linear infinite}
+@keyframes routeGlow{50%{filter:brightness(1.5);box-shadow:0 0 28px #ff58c7}}
+.ieFloorBadge{position:absolute;right:12px;top:12px;background:#07101dcc;border:1px solid #2d4363;padding:6px 8px;border-radius:8px;color:#9fb2d2;font-size:8px;z-index:6}
+.ieCenterBar{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:center;z-index:20}
+.ieCenterBar .ieStatus{background:#07101de6;border:1px solid #263b5d;border-radius:10px;padding:8px 10px;font-size:9px;color:#9cb0cf}
+.ieControls{display:flex;gap:6px}.ieControls button{background:#0b1729;border:1px solid #304463;color:#dce9ff;border-radius:8px;padding:8px 10px;cursor:pointer}
+.ieSearch{width:100%;padding:10px 11px;border-radius:9px;border:1px solid #2a3c5b;background:#0a1424;color:#fff;outline:none}.ieSearch:focus{border-color:#4de8ff}
+.ieResults{display:grid;gap:6px;margin-top:8px}.ieResult{padding:9px;border:1px solid #223653;background:#0c1728;border-radius:8px;cursor:pointer}.ieResult:hover{border-color:#4de8ff}.ieResult b{font-size:10px}.ieResult span{display:block;color:#70829f;font-size:8px;margin-top:3px}
+.ieInfoCard{margin-top:12px;padding:11px;border:1px solid #243956;background:#0b1628;border-radius:10px}.ieInfoCard h4{margin:0 0 7px;font-size:11px}.ieInfoCard p{margin:0;color:#8b9dbb;font-size:9px;line-height:1.5}
+.ieRouteSteps{display:grid;gap:7px;margin-top:8px}.ieStep{display:flex;gap:8px;align-items:center;font-size:9px;color:#b9c8df}.ieStep i{width:20px;height:20px;border-radius:50%;background:#142b45;border:1px solid #315171;display:grid;place-items:center;font-style:normal;color:#64eaff;font-size:8px}
+.ieActions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}.ieActions button{background:#102039;color:#d9e7fb;border:1px solid #2b4264;border-radius:8px;padding:8px;cursor:pointer;font-size:9px;font-weight:700}.ieActions button.primary{background:linear-gradient(135deg,#153e4a,#28234d);border-color:#4de8ff}
+.ieLegend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px;font-size:8px;color:#788ba8}.ieLegend span{display:flex;align-items:center;gap:5px}.ieLegend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.ieDisclaimer{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:30;background:#070e1bd9;border:1px solid #293c5c;border-radius:999px;padding:6px 11px;color:#7488a8;font-size:8px;pointer-events:none}
+@media(max-width:900px){.ieBody{grid-template-columns:190px minmax(0,1fr)}.ieSide.right{display:none}.ieWorld{transform:scale(.8)}}@media(max-width:650px){.ieBody{grid-template-columns:1fr}.ieSide.left{display:none}.ieCenter{min-height:calc(100vh - 72px)}.ieWorld{transform:scale(.65)}}
+
+
+
+/* V10 MOBILE-FIRST REBUILD */
+#mobileShell{display:none}
+@media(max-width:700px){
+  html,body{width:100%;height:100%;overflow:hidden;background:#f5f7fb;color:#152033}
+  .app{display:none!important}
+  #mobileShell{display:flex;position:fixed;inset:0;z-index:10;flex-direction:column;background:#f5f7fb;color:#152033;overflow:hidden}
+  .mHeader{height:64px;flex:0 0 64px;background:#fff;border-bottom:1px solid #e5e9f0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-shadow:0 2px 12px #1520330c}
+  .mBrand{display:flex;align-items:center;gap:10px}.mLogo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#0b9fc0,#6d5be8);color:white;font-weight:900;font-size:19px}.mBrand h1{font-size:17px;margin:0;letter-spacing:-.02em}.mBrand p{font-size:9px;color:#7c8799;margin:2px 0 0}.mOffline{font-size:8px;font-weight:800;color:#087a5b;background:#e9faf4;border:1px solid #c7eee0;padding:6px 8px;border-radius:999px}
+  .mScroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 94px;-webkit-overflow-scrolling:touch}
+  .mSearch{height:50px;background:#fff;border:1px solid #e1e6ef;border-radius:16px;display:flex;align-items:center;gap:9px;padding:0 14px;box-shadow:0 5px 20px #1520330a}.mSearch span{font-size:18px;color:#6d7a8f}.mSearch input{border:0;outline:0;width:100%;font-size:14px;color:#182235;background:transparent}.mSearch input::placeholder{color:#8994a5}
+  .mGreeting{margin:17px 2px 12px}.mGreeting h2{font-size:22px;line-height:1.08;margin:0;color:#142033}.mGreeting p{font-size:11px;color:#728097;margin:6px 0 0}
+  .mQuick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:15px}.mQuick button{border:1px solid #e0e6ef;background:#fff;border-radius:14px;min-height:66px;padding:7px 3px;color:#26344a;font-size:9px;font-weight:800;box-shadow:0 4px 14px #15203308}.mQuick b{display:block;font-size:20px;margin-bottom:5px}.mQuick button:active{transform:scale(.97);background:#f3f7ff}
+  .mCard{background:#fff;border:1px solid #e0e6ef;border-radius:20px;box-shadow:0 7px 24px #1520330c;margin-bottom:14px;overflow:hidden}.mCardHead{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px}.mCardHead h3{font-size:14px;margin:0}.mCardHead span{font-size:9px;color:#7b8799}.mMapFrame{margin:0 10px 10px;height:310px;border-radius:15px;overflow:hidden;background:#eef1f5;position:relative;border:1px solid #dfe5ed;touch-action:pan-x pan-y}.mMapFrame img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}.mMapBadge{position:absolute;left:9px;top:9px;background:#152033e8;color:#fff;border-radius:999px;padding:6px 8px;font-size:8px;font-weight:800}.mMapHint{position:absolute;right:9px;bottom:9px;background:#fffef0;color:#5d4d16;border:1px solid #eadb8a;border-radius:9px;padding:6px 8px;font-size:8px;font-weight:700;box-shadow:0 3px 12px #0002}
+  .mRouteCard{padding:13px 14px}.mRouteRow{display:flex;gap:9px;align-items:center;margin-bottom:9px}.mRouteRow .dot{width:9px;height:9px;border-radius:50%;background:#0ca5c6;box-shadow:0 0 0 4px #0ca5c61a}.mRouteRow strong{font-size:11px}.mRouteRow small{display:block;color:#7a879b;font-size:9px;margin-top:2px}.mRouteBtn{width:100%;height:46px;border:0;border-radius:13px;background:#0b9fbe;color:#fff;font-size:12px;font-weight:900;margin-top:2px}.mInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 14px}.mInfoBox{background:#f7f9fc;border:1px solid #e7ebf2;border-radius:12px;padding:10px}.mInfoBox b{font-size:10px;display:block}.mInfoBox span{font-size:8px;color:#7a8799;display:block;margin-top:3px;line-height:1.35}
+  .mSectionTitle{font-size:11px;font-weight:900;color:#445169;text-transform:uppercase;letter-spacing:.08em;margin:17px 2px 9px}.mTools{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mTool{background:#fff;border:1px solid #e0e6ef;border-radius:15px;padding:12px;text-align:left;min-height:74px;box-shadow:0 4px 14px #15203308}.mTool b{font-size:12px;display:block}.mTool span{font-size:9px;color:#7a8799;display:block;margin-top:4px;line-height:1.3}
+  .mBottom{position:fixed;z-index:500;left:0;right:0;bottom:0;height:76px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e3e8ef;display:grid;grid-template-columns:repeat(5,1fr);box-shadow:0 -5px 20px #15203312}.mBottom button{border:0;background:transparent;border-radius:13px;color:#7c8799;font-size:8px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.mBottom button b{font-size:19px;line-height:1}.mBottom button.active{color:#078eaa;background:#e9f9fc}
+  .mOverlay{display:none;position:fixed;inset:0;z-index:600;background:#f5f7fb}.mOverlay.open{display:flex;flex-direction:column}.mOverlayHead{height:62px;flex:0 0 62px;background:#fff;border-bottom:1px solid #e3e8ef;display:flex;align-items:center;gap:10px;padding:0 12px}.mBack{width:40px;height:40px;border:1px solid #e0e6ef;background:#fff;border-radius:12px;font-size:20px}.mOverlayHead h2{font-size:16px;margin:0}.mOverlayHead p{font-size:8px;color:#7b8798;margin:3px 0 0}.mOverlayBody{flex:1;overflow:auto;padding:12px 12px 24px}.mMapLarge{background:#fff;border:1px solid #dfe5ed;border-radius:18px;overflow:auto;box-shadow:0 7px 24px #1520330c}.mMapLarge img{display:block;width:100%;min-width:620px;height:auto}.mMapNote{font-size:9px;color:#718096;line-height:1.4;margin:9px 2px}
+  .mDemo video{width:100%;border-radius:15px;background:#000}.mDemoNote{font-size:9px;line-height:1.45;color:#718096;margin-top:9px}
+  #mobileRouteSheet{z-index:700!important;left:10px!important;right:10px!important;bottom:84px!important;background:#fff!important;color:#152033!important;border:1px solid #dfe5ed!important;box-shadow:0 18px 50px #15203335!important;padding:16px!important}.mField label{color:#758197!important}.mField select{background:#f7f9fc!important;color:#152033!important;border:1px solid #dfe5ed!important}.mActions button{background:#f2f6fb!important;color:#26344a!important;border-color:#dce4ee!important}.mActions .primary{background:#0b9fbe!important;color:#fff!important;border-color:#0b9fbe!important}
+  #mobileMainNav{display:none!important}
+}
+@media(min-width:701px){#mobileShell{display:none!important}}
+
+</style>
+
+<style id="campus-orbit-v9-mobile">
+/* CAMPUS ORBIT V9 — MOBILE-FIRST LAYER */
+#mobileRouteSheet,#mobileMainNav{display:none}
+@media (max-width:700px){
+  html,body{width:100%;height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent}
+  body{font-size:14px}
+  .app{display:block;width:100vw;height:100dvh;min-height:100dvh;overflow:hidden}
+  header{height:58px;min-height:58px;padding:8px 12px;position:fixed;z-index:90;top:0;left:0;right:0;background:rgba(7,13,24,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.09)}
+  .brand{gap:8px}.logo{width:34px;height:34px;font-size:22px}.brand h1{font-size:17px;line-height:1}.brand p{display:none}.headerRight{gap:6px}.headerRight .mode{display:none}.badge{font-size:8px;padding:6px 7px}
+  aside{display:none}
+  main{position:absolute;inset:0;padding:0!important;width:100vw;height:100dvh}
+  .hud{position:fixed;z-index:60;top:67px;left:10px;right:10px;display:flex;gap:7px;align-items:center}
+  .glass.search{flex:1;height:45px;padding:0 12px;border-radius:15px;background:rgba(10,19,35,.9);box-shadow:0 8px 28px rgba(0,0,0,.28)}
+  .glass.search input{font-size:14px;min-width:0}.quick{display:none}
+  .viewBtns{position:fixed;z-index:55;right:10px;top:122px;display:flex;flex-direction:column;gap:6px}.viewBtns button{min-width:44px;min-height:42px;padding:8px;border-radius:12px;font-size:11px}
+  .scene{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;border-radius:0!important;overflow:hidden!important;touch-action:none}
+  .scene:after{content:'Drag to explore • Pinch/scroll to zoom';position:absolute;z-index:12;left:50%;bottom:91px;transform:translateX(-50%);white-space:nowrap;background:rgba(7,13,24,.78);border:1px solid rgba(255,255,255,.08);padding:7px 10px;border-radius:999px;font-size:9px;color:#b8c6dc;pointer-events:none}
+  .world{transform-origin:center center!important}
+  .panel{position:fixed!important;z-index:120;left:10px!important;right:10px!important;bottom:76px!important;top:auto!important;width:auto!important;max-height:46dvh;overflow:auto;border-radius:20px!important}
+  .toast{bottom:82px!important;z-index:200}
+  #mobileRouteSheet{display:none;position:fixed;z-index:130;left:8px;right:8px;bottom:74px;background:rgba(8,15,29,.97);border:1px solid rgba(255,255,255,.11);border-radius:22px;padding:15px;box-shadow:0 18px 55px rgba(0,0,0,.45);backdrop-filter:blur(18px)}
+  #mobileRouteSheet.open{display:block;animation:mSheet .2s ease-out}
+  #mobileRouteSheet h3{margin:0 0 11px;font-size:16px}.mField{margin:8px 0}.mField label{display:block;font-size:9px;color:#8292ad;margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em}.mField select{width:100%;height:45px;border-radius:12px;background:#101c31;color:#edf4ff;border:1px solid #293a57;padding:0 11px;font-size:13px}
+  .mActions{display:grid;grid-template-columns:1fr 1.35fr;gap:8px;margin-top:10px}.mActions button{min-height:46px;border-radius:13px;border:1px solid #30445f;background:#13233b;color:#eaf2ff;font-weight:700}.mActions .primary{background:#08a9c8;border-color:#08a9c8;color:#04131b}
+  #mobileMainNav{display:grid;position:fixed;z-index:140;left:0;right:0;bottom:0;height:68px;padding:7px 7px calc(7px + env(safe-area-inset-bottom));grid-template-columns:repeat(4,1fr);gap:5px;background:rgba(7,13,24,.96);border-top:1px solid rgba(255,255,255,.1);backdrop-filter:blur(18px)}
+  #mobileMainNav button{border:0;background:transparent;color:#7f91ad;border-radius:13px;font-size:9px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.#mobileMainNav button b{font-size:20px;line-height:1}#mobileMainNav button.active{color:#5de7ff;background:rgba(77,232,255,.08)}
+  .ab1Mode,.floorModal,.ab1Explore{z-index:300!important}
+  .ab1Top{padding:10px 12px!important;min-height:58px}.ab1Top h2{font-size:15px!important}.ab1Top p{display:none}.ab1Actions{gap:4px!important}.ab1Actions button{min-height:38px!important;padding:7px!important;font-size:9px!important}.ab1Actions button:nth-child(1),.ab1Actions button:nth-child(2),.ab1Actions button:nth-child(3),.ab1Actions button:nth-child(4){display:none}
+  .ab1Stage{display:block!important}.ab1Viewer{height:62dvh!important;width:100%!important}.ab1Legend{display:none!important}
+  .ab1World{transform-origin:center!important}.ab1RoomPin{transform:translate(-50%,-50%) scale(.9)!important}
+  .ab1Mode .ab1Actions #launchIndoor{display:block!important}.ab1Mode .ab1Actions #ab1Close3D{display:block!important}
+  .floorModal .fmTop{padding:10px!important}.floorModal .fmBody{display:block!important}.fmCanvas{height:60dvh!important}.fmInfo{display:none!important}
+  .ab1Explore{position:fixed!important;inset:0!important;border-radius:0!important}.ab1Explore.open{display:block!important}.ieTop{padding:10px!important}.ieTop h2{font-size:15px!important}.ieTop p{display:none!important}.ieTopBtns button{min-height:38px!important;padding:7px!important;font-size:9px!important}.ieTopBtns #ieAuto,.ieTopBtns #ieReset{display:none}
+  .ieBody{display:block!important}.ieLeft{display:none!important}.ieCenter{height:calc(100dvh - 60px)!important;width:100%!important}.ieCenterBar{bottom:76px!important;left:8px!important;right:8px!important}.ieControls button{min-width:44px!important;min-height:40px!important}.ieViewer{height:100%!important}.ieRight{position:absolute!important;left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;max-height:42dvh!important;overflow:auto!important;border-radius:18px!important;background:rgba(8,15,29,.94)!important;padding:10px!important;z-index:20}.ieFloorTabs{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:4px!important;padding:7px!important}.ieFloorTab{min-height:38px!important;padding:5px!important;font-size:8px!important}.ieSearch{height:42px!important}.ieActions button{min-height:42px!important}.ieResults{max-height:110px!important;overflow:auto}
+  .ieFloor{transform-origin:center!important}.ieRoom{font-size:9px!important}.ieRoom small{font-size:6px!important}.ieConnector{font-size:8px!important}
+  .accuracyBadge{bottom:72px!important;right:8px!important;font-size:7px!important;opacity:.7}
+  @keyframes mSheet{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+}
+@media (min-width:701px){#mobileMainNav,#mobileRouteSheet{display:none!important}}
+</style>
+
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><div class="logo">◎</div><div><h1>Campus Orbit</h1><p>Interactive 3D campus wayfinding • offline prototype</p></div></div><div class="headerRight"><div class="mode">PROTOTYPE • V5</div><div class="badge">● OFFLINE READY</div></div></header>
+<aside>
+  <div class="section"><div class="sectionTitle">Navigate <span>WAYFINDING</span></div>
+    <div class="field"><label>START FROM</label><select class="control" id="from"><option value="gate1">Gate 1</option><option value="gate2">Gate 2</option><option value="ab1main">AB1 Main Entrance</option><option value="ab1accounts">AB1 Accounts-side Entrance</option><option value="ab2">AB2</option><option value="mr">M & R</option></select></div>
+    <div class="field"><label>DESTINATION</label><select class="control" id="to"></select></div>
+    <div class="grid2"><button class="btn primary" id="routeBtn">✦ Show Route</button><button class="btn" id="clearBtn">Clear</button></div>
+    <button class="btn access" id="accessBtn" style="width:100%;margin-top:7px">♿ Accessible Route: OFF</button>
+  </div>
+  <div class="section"><div class="sectionTitle">Explore <span>INTERACTIVE</span></div><div class="grid2"><button class="btn active" id="campusBtn">◈ Campus</button><button class="btn" id="ab1Btn">▣ AB1 3D</button></div>
+    <div class="grid2" style="margin-top:7px"><button class="btn" data-floor="0">Ground</button><button class="btn" data-floor="1">1st Floor</button><button class="btn" data-floor="2">2nd Floor</button><button class="btn" data-floor="3">3rd Floor</button><button class="btn" data-floor="4">4th Floor</button><button class="btn" id="demoBtn">▶ Demo</button></div></div>
+  <div class="section"><div class="sectionTitle">Live details <span>REAL CAMPUS DATA</span></div><div class="info" id="info"><b>Campus overview</b><br>Built from the campus layout you supplied. Click a building to inspect it. Drag the 3D model to rotate it.</div></div>
+  <div class="section"><div class="sectionTitle">Legend</div><div class="legend"><div><i style="background:#7460a9"></i>Academic / admin</div><div><i style="background:#ff63c3"></i>M & R</div><div><i style="background:#4de8ff"></i>AB1 focus</div><div><i style="background:#5cffaa"></i>Accessible</div><div><i style="background:#ffd166"></i>Stair</div><div><i style="background:#9b7cff"></i>Lift</div></div></div>
+  <div class="tip">Prototype note: room positions are schematic where an exact floor plan was not supplied. Room 418 uses the reference position you identified.</div>
+</aside>
+<main>
+  <div class="hud"><div class="glass search">⌕ <input id="search" placeholder="Search room, building or facility…"></div><div class="quick"><button class="chip" id="presBtn">Presentation mode</button><button class="chip" id="helpBtn">How to use</button></div></div>
+  <div class="viewBtns"><button id="resetView">↻ Reset</button><button id="topView">Top</button><button id="tiltView">3D Tilt</button></div>
+  <div class="scene" id="scene"><div class="world" id="world">
+    <div class="campusBase"><div class="innerGround"></div></div>
+    <div class="road rTop"></div><div class="road rBottom"></div><div class="road rLeft"></div><div class="road rRight"></div><div class="roadCenter"></div>
+    <div class="gate g1">GATE 1</div><div class="gate g2">GATE 2</div><div class="gate g3">GATE 3</div><div class="gate g4">GATE 4</div>
+    <div class="bld bba" data-name="BBA Building"><div class="roof">BBA BUILDING</div></div>
+    <div class="bld boysNew" data-name="Boys Hostel New"><div class="roof" style="font-size:9px">BOYS<br>HOSTEL<br>NEW</div></div>
+    <div class="bld groundB" data-name="Ground"><div class="roof">GROUND</div></div>
+    <div class="bld ab2" data-name="AB2 — Academic Block 2"><div class="roof" style="font-size:30px">AB2</div></div>
+    <div class="bld ab1" id="ab1" data-name="AB1 — Academic Block 1"><div class="roof" style="font-size:43px">AB1<div class="sub">ACADEMIC BLOCK 1</div></div></div>
+    <div class="bld accounts" data-name="Accounts & Offices"><div class="roof" style="font-size:7px;writing-mode:vertical-rl">ACCOUNTS & OFFICES</div></div>
+    <div class="bld mr" data-name="M & R — Management & Research"><div class="roof">M & R<div class="sub">MANAGEMENT & RESEARCH</div></div></div>
+    <div class="bld caf" data-name="Cafeteria"><div class="roof" style="font-size:9px">CAFETERIA</div></div>
+    <div class="bld girls" data-name="Girl's Hostel"><div class="roof">GIRL'S HOSTEL</div></div>
+    <div class="bld boys" data-name="Boys Hostel"><div class="roof">BOYS HOSTEL</div></div>
+    <div class="bld workshop" data-name="Workshop"><div class="roof">WORKSHOP</div></div>
+    <div class="bld stationery" data-name="Stationery"><div class="roof" style="font-size:8px">STATIONERY</div></div>
+    <div class="bld shed" data-name="Shed Area"><div class="roof" style="font-size:8px;writing-mode:vertical-rl">SHED AREA</div></div>
+    <div class="bld court mfc" data-name="MFC — Mini Net Football Court"><div class="roof" style="font-size:7px">MFC</div></div><div class="bld court bg" data-name="BG — Basketball Ground"><div class="roof" style="font-size:7px">BG</div></div><div class="bld court bc" data-name="BC — Badminton Court"><div class="roof" style="font-size:7px">BC</div></div><div class="bld court vbc" data-name="VBC — Volleyball Court"><div class="roof" style="font-size:7px">VBC</div></div>
+    <div class="bld parking" data-name="Two-Wheeler Parking"><div class="roof" style="font-size:9px">TWO-WHEELER<br>PARKING</div></div>
+    <div class="skywalk"></div><div class="tag tAb1">AB1 • 5 FLOORS</div><div class="tag tAb2">AB2</div><div class="tag tMr">M&R</div><div class="tag skyLabel">SKYWALK</div>
+    <div class="floors" id="floors" style="display:none"></div><div class="route" id="routeLine"></div><div class="node" id="node1"></div><div class="node" id="node2"></div>
+<svg class="routeSvg" id="routeSvg" viewBox="0 0 980 650" preserveAspectRatio="none" aria-hidden="true"><polyline id="routePath" class="routePath" points=""/><circle id="routeStart" class="routeDot" cx="0" cy="0" r="7"/><circle id="routeEnd" class="routeDot" cx="0" cy="0" r="7"/><text id="routeLabel" class="routeCaption" x="0" y="0">ROUTE</text></svg>
+  </div></div>
+  <div class="stats"><div class="stat glass"><b>5</b> AB1 floors</div><div class="stat glass"><b>4</b> stairs / floor</div><div class="stat glass"><b>2</b> lifts in AB1</div><div class="stat glass"><b>100%</b> offline demo</div></div>
+  <div class="panel glass" id="panel"><button class="close" id="close">×</button><h3 id="panelTitle"></h3><p id="panelText"></p></div><div class="toast" id="toast"></div>
+  <div class="floorModal" id="floorModal" aria-hidden="true"><div class="fmTop"><div class="fmBrand"><button class="fmBack" id="floorBack">← Campus</button><div><div class="fmTitle">AB1 · <span id="fmFloorName">4th Floor</span></div><div class="fmSub">Academic Block 1 • detailed floor exploration</div></div></div><div class="fmActions"><span class="fmBadge">● Schematic prototype</span><button id="fmRoute">✦ Show Route</button><button id="fmAccess">♿ Accessible</button><button id="fmClose">✕ Close</button></div></div><div class="fmBody"><aside class="fmFloors"><h4>AB1 Floors</h4><button class="floorBtn" data-fm-floor="0"><b>Ground</b><span>001–027 • admin & labs</span></button><button class="floorBtn" data-fm-floor="1"><b>1st Floor</b><span>101–139 • CSE & labs</span></button><button class="floorBtn" data-fm-floor="2"><b>2nd Floor</b><span>201–235 • labs & classrooms</span></button><button class="floorBtn" data-fm-floor="3"><b>3rd Floor</b><span>301–333 • library & rooms</span></button><button class="floorBtn" data-fm-floor="4"><b>4th Floor</b><span>401–438 • A.S. & Humanities</span></button><div class="floorNote">Room positions are schematic from the supplied directory boards. Room 418 uses the reference location you identified.</div></aside><section class="fmCanvas"><div class="floorPlan" id="floorPlan"><div class="fpHeader"><div>AB1 — <span id="fpHeaderFloor">4TH FLOOR</span><small>FLOOR PLAN • CAMPUS ORBIT PROTOTYPE</small></div></div><div class="fpCorridor"></div><div id="fpRooms"></div><div class="fpRoute" id="fpRoute"></div><div class="fpLegend"><span><i style="background:#c88b2d"></i>Stair</span><span><i style="background:#2f75b5"></i>Lift</span><span><i style="background:#0e5360"></i>Selected</span><span><i style="background:#00c6ff"></i>Route</span></div></div></section><aside class="fmInfo"><div class="fmCard"><h3>Find a room</h3><input class="fmSearch" id="fmSearch" placeholder="e.g. 418, library, lab…"><div id="fmResults"></div></div><div class="fmCard" id="fmSelected"><h3>Selected location</h3><p>Choose a room on the floor plan or search above.</p></div><div class="fmCard"><h3>Navigation</h3><p>Choose a room and use <b>Show Route</b>. Distances are schematic until surveyed.</p><div class="routeChoice"><button id="fmStandard">🚶 Standard</button><button id="fmAccessible">♿ Accessible</button></div></div></aside></div></div>
+<!-- AB1 INDOOR EXPLORER -->
+<div class="ab1Explore" id="ab1Explore" aria-hidden="true">
+  <div class="ieTop">
+    <div class="ieBrand"><div class="ieLogo">◎</div><div class="ieTitle"><h2>AB1 · Indoor Explorer</h2><p>Explore floors • rooms • stairs • lifts • route preview</p></div></div>
+    <div class="ieTopBtns"><button id="ieAuto">▶ Guided Explore</button><button id="ieReset">↻ Reset</button><button id="ieClose">✕ Close</button></div>
+  </div>
+  <div class="ieBody">
+    <aside class="ieSide left">
+      <h3>Building levels</h3>
+      <div class="ieFloorTabs" id="ieFloorTabs">
+        <button class="ieFloorTab all active" data-ie-floor="-1"><b>All Floors</b><span>Exploded building view</span></button>
+        <button class="ieFloorTab" data-ie-floor="0"><b>Ground Floor</b><span>001–027 · admin / labs</span></button>
+        <button class="ieFloorTab" data-ie-floor="1"><b>1st Floor</b><span>101–139 · CSE / labs</span></button>
+        <button class="ieFloorTab" data-ie-floor="2"><b>2nd Floor</b><span>201–235 · classrooms / labs</span></button>
+        <button class="ieFloorTab" data-ie-floor="3"><b>3rd Floor</b><span>301–333 · library / rooms</span></button>
+        <button class="ieFloorTab" data-ie-floor="4"><b>4th Floor</b><span>401–438 · A.S. & Humanities</span></button>
+      </div>
+      <div class="ieHint">This is the indoor-navigation prototype shown in an enhanced form. Room locations are schematic except the <b>Room 418</b> reference position you supplied.</div>
+      <div class="ieInfoCard"><h4>Known vertical connectors</h4><p>4 staircases are represented on every floor. Two lifts are represented inside AB1. Lift-based navigation is preferred in Accessible mode.</p></div>
+      <div class="ieLegend"><span><i style="background:#24466b"></i>Room</span><span><i style="background:#ff58c7"></i>Selected</span><span><i style="background:#5c4320"></i>Stair</span><span><i style="background:#173f49"></i>Lift</span></div>
+    </aside>
+    <section class="ieCenter" id="ieCenter">
+      <div class="ieGrid"></div><div class="ieDisclaimer">AB1 • 5-FLOOR INTERACTIVE MODEL • OFFLINE</div>
+      <div class="ieViewer" id="ieViewer"><div class="ieWorld" id="ieWorld"></div></div>
+      <div class="ieCenterBar"><div class="ieStatus" id="ieStatus">All floors · drag to rotate · scroll to zoom</div><div class="ieControls"><button id="ieTop">Top</button><button id="ieTilt">3D</button><button id="ieExplode">Explode</button></div></div>
+    </section>
+    <aside class="ieSide right">
+      <h3>Find inside AB1</h3><input class="ieSearch" id="ieSearch" placeholder="Search 418, library, lab..."><div class="ieResults" id="ieResults"></div>
+      <div class="ieInfoCard" id="ieSelected"><h4>Selected location</h4><p>Select a room, floor or connector to inspect it.</p></div>
+      <div class="ieInfoCard"><h4>Getting to the room</h4><div class="ieRouteSteps" id="ieRouteSteps"><div class="ieStep"><i>1</i><span>Select a room</span></div><div class="ieStep"><i>2</i><span>Choose route</span></div></div><div class="ieActions"><button class="primary" id="ieRoute">✦ Show Route</button><button id="ieAccess">♿ Accessible</button></div></div>
+      <div class="ieInfoCard"><h4>Presentation flow</h4><p><b>All Floors → Floor → Room → Route.</b> A new student can zoom from the building level down to the exact room and then follow the navigation sequence.</p></div>
+    </aside>
+  </div>
+</div>
+
+  <div class="presentation" id="presentation"><div class="pbox"><h2>Campus Orbit</h2><p>Interactive 3D Campus Navigation Prototype</p><div class="bigRoute">Gate 1 → AB1 → 4th Floor → Room 418</div><p>Drag to rotate • Scroll to zoom • Select buildings • Explore floors • Preview routes</p><button class="btn primary closeP" id="closeP">Return to prototype</button></div></div>
+
+  <div class="compass" title="Orientation">N</div>
+  <div class="v4dock">
+    <button id="videoBtn">▶ Demo Video</button>
+    <button id="refBtn">▣ Original Map</button>
+    <button id="routeStepsBtn">⌁ Route Steps</button>
+    <button id="focusBtn">◎ Focus AB1</button>
+  </div>
+  <div class="videoModal" id="videoModal"><div class="modalCard"><div class="modalTop"><div><h2>Campus Orbit — Prototype Walkthrough</h2><div class="tip">A short offline demo showing the intended interaction flow.</div></div><button class="x" id="closeVideo">×</button></div><video class="demoVideo" id="demoVideo" controls preload="metadata"><source src="CampusOrbit_Demo.mp4" type="video/mp4"></video><p class="modalNote">The video is a presentation aid. The campus geometry follows the supplied layout; the AB1 Room 418 section is explicitly shown as a schematic prototype because a complete architectural floor plan was not provided.</p></div></div>
+  <div class="refModal" id="refModal"><div class="modalCard"><div class="modalTop"><div><h2>Original Campus Layout</h2><div class="tip">Reference supplied for building placement.</div></div><button class="x" id="closeRef">×</button></div><img class="refImg" src="CampusLayoutReference.png" alt="Original campus layout reference"><p class="modalNote">This reference is the source layout used for the prototype. Only details supplied by you are represented as campus facts.</p></div></div>
+  <div class="v6Toolbar"><button id="ab1ModelBtn">🏢 AB1 3D Model</button><button id="routeDetailsBtn">⌁ Route Details</button><button id="campusFactsBtn">◈ Campus Facts</button></div><div class="accuracyBadge">V6 • Offline • Based only on supplied campus data</div>
+  <div class="ab1Mode" id="ab1Mode"><div class="ab1Top"><div><h2>AB1 · 3D Building Explorer</h2><p>Academic Block 1 • 5 floors • 4 staircases/floor • 2 lifts</p></div><div class="ab1Actions"><button id="ab1Reset3D">↻ Reset</button><button id="ab1Top3D">Top</button><button id="ab1Explode">Exploded Floors</button><button id="ab1OpenFloor">Open 4th Floor</button><button id="launchIndoor">✦ Explore AB1</button><button id="ab1Close3D">✕ Close</button></div></div><div class="ab1Stage"><div class="ab1Viewer" id="ab1Viewer"><div class="ab1World" id="ab1World"><div class="ab1Ground"></div><div class="floorSlab fl0" data-f="0"><div class="flabel">GROUND FLOOR<small>001–027 • ADMIN / LABS</small></div></div><div class="floorSlab fl1" data-f="1"><div class="flabel">1ST FLOOR<small>101–139 • CSE / LABS</small></div></div><div class="floorSlab fl2" data-f="2"><div class="flabel">2ND FLOOR<small>201–235 • CLASSROOMS / LABS</small></div></div><div class="floorSlab fl3" data-f="3"><div class="flabel">3RD FLOOR<small>301–333 • LIBRARY / ROOMS</small></div></div><div class="floorSlab fl4" data-f="4"><div class="flabel">4TH FLOOR<small>401–438 • A.S. & HUMANITIES</small></div></div><div class="stairTower sA">S1</div><div class="stairTower sB">S2</div><div class="stairTower sC">S3</div><div class="stairTower sD">S4</div><div class="liftTower lA">L1</div><div class="liftTower lB">L2</div><div class="ab1RoomPin" id="ab1RoomPin" title="Room 418 — supplied reference position"></div></div></div><aside class="ab1Legend"><h3>AB1 navigation model</h3><div class="modelStat"><b>Room 418</b><span>Placed at the reference position identified from your photo. Click the marker to open its floor.</span></div><div class="modelStat"><b>Vertical navigation</b><span>Every AB1 floor has 4 staircases. The prototype also represents 2 lifts inside the building.</span></div><div class="modelStat"><b>Known entrances</b><span>Main entrance faces the Gate 1 side. Another entrance is beside Accounts & Offices, which is the closest AB1-side entrance from AB2.</span></div><div class="legendDots"><span><i style="background:#9b7cff"></i>Floor</span><span><i style="background:#b77b2b"></i>Stair</span><span><i style="background:#246e78"></i>Lift</span><span><i style="background:#ff4fba"></i>Room 418</span></div><div class="featureGrid"><div class="featureCard"><b>♿ Accessible</b><span>Use lift-based vertical movement where available.</span></div><div class="featureCard"><b>↻ Rotatable</b><span>Drag the model to inspect it from different angles.</span></div></div><div class="ab1Hint">Important: this is a presentation prototype, not a surveyed architectural model. Unknown corridor geometry is intentionally not invented.</div></aside></div></div>
+  <div class="refModal" id="routeDetailsModal"><div class="modalCard"><div class="modalTop"><div><h2>Campus Orbit · Route Details</h2><div class="tip">Routes use only the connections you have supplied.</div></div><button class="x" id="closeRouteDetails">×</button></div><div id="routeDetailsContent" class="routeInfoBox"></div></div></div>
+  <div class="refModal" id="factsModal"><div class="modalCard"><div class="modalTop"><div><h2>Campus Orbit · Verified Campus Facts</h2><div class="tip">Useful for explaining the prototype during presentation.</div></div><button class="x" id="closeFacts">×</button></div><div class="featureGrid"><div class="featureCard"><b>Gate 1</b><span>Major entrance and commonly used return gate.</span></div><div class="featureCard"><b>Gate 2</b><span>Used majorly during recess because lunch services operate outside for different hostels.</span></div><div class="featureCard"><b>AB1</b><span>Ground + 1st + 2nd + 3rd + 4th floors; 4 staircases per floor and 2 lifts represented.</span></div><div class="featureCard"><b>AB2 → AB1</b><span>Road connection is required; closest AB1 entrance from AB2 is beside Accounts & Offices.</span></div><div class="featureCard"><b>M & R</b><span>Management & Research. Cafeteria is behind M & R with a small open eating area in front.</span></div><div class="featureCard"><b>Campus courts</b><span>MFC = Mini Net Football Court • BG = Basketball Ground • BC = Badminton Court • VBC = Volleyball Court.</span></div><div class="featureCard"><b>Skywalk</b><span>Link between M & R / AB2 area as supplied on the campus map.</span></div><div class="featureCard"><b>Parking</b><span>Two-wheeler parking is in front of the shed area.</span></div></div></div></div>
+  <div class="refModal" id="stepsModal"><div class="modalCard"><div class="modalTop"><div><h2>How a student uses Campus Orbit</h2><div class="tip">Example: Gate 1 → AB1 → Room 418</div></div><button class="x" id="closeSteps">×</button></div><div class="steps"><div class="step"><b>01 · Start</b><span>Choose Gate 1 as the starting point.</span></div><div class="step"><b>02 · Building</b><span>Select AB1 — Academic Block 1.</span></div><div class="step"><b>03 · Floor</b><span>Open the 4th-floor view and locate Room 418.</span></div><div class="step"><b>04 · Route</b><span>Choose a stair/lift route and follow the highlighted path.</span></div></div><div class="info" style="margin-top:12px"><b>♿ Accessibility:</b> the prototype can switch to an accessible route mode and prioritize lift-based navigation where that route is available.</div></div></div>
+</main></div>
+<script>
+const rooms={
+"010":"Reception","10A":"Exam Cell","011":"Accounts & Student Services","11A":"IQAC","012":"R&D Cell","014":"Class Room","015":"SAP Lab-1","016":"SAP Lab-2","017":"Auditorium-2","018":"Class Room","019-027":"Faculty Cabins","009":"Director Office","008":"Chemistry Lab-1","08A":"Chemistry Lab-2","007":"Store","07A":"Medical Room","006":"Campus Shop","005":"Cyber Security Lab","004":"Conference Room","04A":"Placement Cell","003":"Placement Office","002":"Auditorium-1","001":"Placement Office",
+"101":"Faculty Room","102":"Server Room","103":"Computer Lab No. 1","104":"Computer Lab No. 2","105":"Computer Lab No. 3","106":"Computer Lab No. 4","107":"Tutorial Room","108":"Class Room","109":"Class Room","110":"Class Room","111":"Professional Communication Lab","112":"Computer Center","113":"Computer Center","114":"Faculty Room","114-A":"Faculty Room","115":"Faculty Room","116":"CSE Department Library","117":"Computer Lab No. 5","118":"Computer Lab No. 6","119":"Computer Lab No. 7","120":"Computer Lab No. 8","121":"Virtual Lab","122":"HOD - CSE Office","123":"Class Room","124":"Class Room","125":"Class Room","126":"Class Room","127":"Computer Lab No. 9","128":"Computer Lab No. 10","129":"Computer Lab No. 11","130":"Computer Lab No. 12","131-139":"Faculty Cabin",
+"201":"Faculty Room","202":"Class Room","203":"Class Room","204":"Faculty Room","205":"Class Room","206":"Class Room","207":"Class Room","208":"Class Room","209":"Tutorial Room","210":"Class Room","211":"Class Room","212":"Class Room","213":"Faculty Room","214":"Faculty Room","215":"Faculty Room","216":"Class Room","217":"Class Room","218":"Class Room","219":"Computer Lab","220":"Tutorial Room","221":"Faculty Room","222":"Class Room","223":"Incubation Center","224":"Class Room","225":"Class Room","226":"Class Room","227-235":"Faculty Cabins",
+"301":"Central Library","302":"Class Room","303":"Class Room","304":"Tutorial Room","305":"Class Room","306":"Class Room","307":"Class Room","308":"Faculty Room","309":"Faculty Room","310":"Faculty Room","311":"Faculty Room","312":"Class Room","313":"Class Room","314":"Class Room","315":"Deptt. Library","316":"Tutorial Room","317":"Faculty Room","318":"Class Room","319":"Class Room","320":"Class Room","321":"Class Room","322":"Seminar Hall","323":"Faculty Room","324":"Class Room","325-333":"Faculty Room",
+"401":"Faculty Room","402":"Class Room","403":"Class Room","404":"Class Room","405":"Exam Cell (B.Tech 1st Year)","406":"Class Room","407":"Class Room","408":"Class Room","409":"Class Room","410":"Department of Applied Science & Humanities","411":"Faculty Room","412":"Tutorial Room","412-B":"DSW Office","413":"Faculty Room","414":"Faculty Room","415":"Faculty Room","416":"Class Room","417":"Class Room","418":"Class Room","419":"Store Room","420":"Faculty Room","421":"Faculty Room","422":"Class Room","423":"Tutorial Room","424":"Class Room","425":"Tutorial Room","426":"Class Room","427":"Class Room","428":"Class Room","429":"Tutorial Room","430-438":"Faculty Room"};
+const floorRooms=[["010","10A","011","11A","012","014","015","016","017","018","019-027","009","008","08A","007","07A","006","005","004","04A"],["101","102","103","104","105","106","107","108","109","110","111","112","113","114","114-A","115","116","117","118","119"],["201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","218","219","220"],["301","302","303","304","305","306","307","308","309","310","311","312","313","314","315","316","317","318","319","320"],["401","402","403","404","405","406","407","408","409","410","411","412","412-B","413","414","415","416","417","418","419"]];
+const opts=[["ab1main","AB1 Main Entrance"],["ab1accounts","AB1 Accounts-side Entrance"],["ab1room418","AB1 • Room 418"],["ab1room219","AB1 • Room 219 (Computer Lab)"],["ab1room116","AB1 • Room 116 (CSE Library)"],["ab1room223","AB1 • Room 223 (Incubation Center)"],["ab2","AB2"],["mr","M & R"],["caf","Cafeteria"],["workshop","Workshop"],["girls","Girl's Hostel"],["boys","Boys Hostel"],["stationery","Stationery"],["gate2","Gate 2"]];
+const to=document.getElementById('to');opts.forEach(([v,t])=>{let o=document.createElement('option');o.value=v;o.textContent=t;to.appendChild(o)});
+const world=document.getElementById('world'),scene=document.getElementById('scene'),floors=document.getElementById('floors'),panel=document.getElementById('panel'),toast=document.getElementById('toast');let accessible=false,rx=56,rz=-12,zoom=.78,drag=false,px=0,py=0;
+function toastMsg(s){toast.textContent=s;toast.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>toast.style.display='none',2200)}
+function showPanel(t,html){document.getElementById('panelTitle').textContent=t;document.getElementById('panelText').innerHTML=html;panel.style.display='block'}
+document.getElementById('close').onclick=()=>panel.style.display='none';
+function view(){world.style.transform=`rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
+function buildFloors(){floors.innerHTML='';for(let f=0;f<5;f++){let el=document.createElement('div');el.className='floor f'+f;let md=[["S1","marker",7,7],["S2","marker",85,7],["S3","marker",7,84],["S4","marker",85,84],["L1","marker lift",43,7],["L2","marker lift",43,84]];md.forEach(([txt,cl,l,t])=>{let m=document.createElement('div');m.className=cl;m.textContent=txt;m.style.left=l+'%';m.style.top=t+'%';m.title=cl.includes('lift')?'Lift':'Staircase';el.appendChild(m)});if(f===4){let m=document.createElement('div');m.className='marker room418';m.textContent='418';m.style.left='67%';m.style.top='47%';el.appendChild(m)}floorRooms[f].forEach(r=>{let s=document.createElement('span');s.textContent=r;s.title=rooms[r];s.onclick=e=>{e.stopPropagation();showPanel('Room '+r,`<b>${rooms[r]}</b><br>AB1 • ${['Ground','1st','2nd','3rd','4th'][f]} Floor<br><br><button class="btn primary" onclick="roomRoute('${r}',${f})">Show route</button>`)};el.appendChild(s)});floors.appendChild(el)}}buildFloors();
+function showAB1(f=null){document.getElementById('ab1').style.opacity='.92';floors.style.display='none';document.getElementById('info').innerHTML='<b>AB1 — Academic Block 1</b><br>5 floors • 4 staircases per floor • 2 lifts.<br><br>Choose a floor to open the large floor interface. Nothing opens automatically.'}
+function campus(){document.getElementById('ab1').style.opacity='1';floors.style.display='none';document.getElementById('info').innerHTML='<b>Campus overview</b><br>Layout follows the supplied campus map. No extra trees or invented campus blocks were added.<br><br><b>MFC</b> Mini Net Football Court • <b>BG</b> Basketball Ground • <b>BC</b> Badminton Court • <b>VBC</b> Volleyball Court • <b>M&R</b> Management & Research.'}
+document.getElementById('campusBtn').onclick=()=>{campus();toastMsg('Campus overview')};document.getElementById('ab1Btn').onclick=()=>{showAB1();toastMsg('AB1 3D mode')};document.querySelectorAll('[data-floor]').forEach(b=>b.onclick=()=>openFloor(+b.dataset.floor));
+function roomRoute(r,f){to.value=r==='418'?'ab1room418':r==='219'?'ab1room219':r==='116'?'ab1room116':r==='223'?'ab1room223':'ab1main';showAB1(f);route();}
+window.roomRoute=roomRoute;
+const routes={gate1:{ab1main:['Gate 1','AB1 Main Entrance'],ab1accounts:['Gate 1','Road','Accounts-side Entrance'],ab2:['Gate 1','AB2'],mr:['Gate 1','M & R']},gate2:{ab1accounts:['Gate 2','Road','Accounts-side Entrance'],ab2:['Gate 2','AB2'],mr:['Gate 2','M & R'],caf:['Gate 2','Cafeteria']},ab1main:{ab1room418:['AB1 Main Entrance','Main Lift','4th Floor','Room 418'],ab1room219:['AB1 Main Entrance','Main Lift','2nd Floor','Room 219'],ab1room116:['AB1 Main Entrance','Main Lift','1st Floor','Room 116'],ab1room223:['AB1 Main Entrance','Main Lift','2nd Floor','Room 223']},ab1accounts:{ab1room418:['Accounts-side Entrance','Staircase','4th Floor','Room 418'],ab2:['Accounts-side Entrance','Road','AB2']},ab2:{ab1accounts:['AB2','Road','Accounts-side Entrance'],mr:['AB2','Skywalk','M & R']},mr:{ab2:['M & R','Skywalk','AB2']}};
+function route(){let f=document.getElementById('from').value,d=to.value,t=routes[f]?.[d]||routes[d]?.[f];if(!t&&d.startsWith('ab1room')){let r=d.replace('ab1room','');t=['Gate 1','AB1 Main Entrance','Main Lift',r==='418'?'4th Floor':r==='219'||r==='223'?'2nd Floor':'1st Floor','Room '+r]}if(!t){showPanel('Route preview','<b>This route is not yet surveyed in the prototype.</b><br><br>The interface is ready for the remaining campus walking connections to be added.');return}if(d.startsWith('ab1'))showAB1();showPanel('Navigation route',`<b>${accessible?'♿ Accessible route':'🚶 Standard route'}</b><br><br>${t.join('  →  ')}<br><br><span class="tip">Schematic prototype route — exact distances can be added after measurements.</span>`);drawRoute(t)}
+function drawRoute(t){let ab=document.getElementById('ab1').getBoundingClientRect(),wr=world.getBoundingClientRect(),x1=ab.left-wr.left+ab.width*.05,y1=ab.top-wr.top+ab.height*.75,x2=ab.left-wr.left+ab.width*.93,y2=ab.top-wr.top+ab.height*.28,dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),line=document.getElementById('routeLine'),n1=document.getElementById('node1'),n2=document.getElementById('node2');line.style.left=x1+'px';line.style.top=y1+'px';line.style.width=len+'px';line.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;line.style.display='block';n1.style.left=x1-8+'px';n1.style.top=y1-8+'px';n2.style.left=x2-8+'px';n2.style.top=y2-8+'px';n1.style.display=n2.style.display='block';toastMsg('Route highlighted')}
+document.getElementById('routeBtn').onclick=route;document.getElementById('clearBtn').onclick=()=>{document.getElementById('routeLine').style.display='none';document.getElementById('node1').style.display='none';document.getElementById('node2').style.display='none';panel.style.display='none';campus()};document.getElementById('accessBtn').onclick=()=>{accessible=!accessible;document.getElementById('accessBtn').textContent='♿ Accessible Route: '+(accessible?'ON':'OFF');toastMsg(accessible?'Accessible route enabled':'Accessible route disabled')};
+document.querySelectorAll('.bld').forEach(b=>b.onclick=()=>{let n=b.dataset.name;if(n.startsWith('AB1')){showAB1();showPanel('AB1 — Academic Block 1',`<b>5 floors</b> • 4 staircases per floor • 2 lifts.<br><br><button class="btn primary" onclick="openIndoorExplorer(4,'418')">✦ Explore AB1</button><br><br><button class="btn" onclick="openFloor(4,'418')">Open 4th Floor Plan</button><br><br><span class="tip">Explore the building floor-by-floor, search rooms and preview a route.</span>`);toastMsg('AB1 selected');return}showPanel(n,`<b>${n}</b><br><br>This location is represented from the supplied campus layout. Detailed floor data can be added when available.`)});
+// Search
+const search=document.getElementById('search');search.addEventListener('keydown',e=>{if(e.key!=='Enter')return;let q=search.value.trim().toLowerCase();if(!q)return;let hit=Object.keys(rooms).find(k=>k.toLowerCase()===q)||Object.keys(rooms).find(k=>(rooms[k]||'').toLowerCase().includes(q));if(hit){let f=Math.floor((parseInt(hit)||100)/100);f=Math.max(0,Math.min(4,f));openFloor(f,hit);return}let b=[...document.querySelectorAll('.bld')].find(x=>x.dataset.name.toLowerCase().includes(q));if(b){b.scrollIntoView?.();showPanel('Location found',b.dataset.name);return}toastMsg('No matching location in current prototype')});
+// 3D controls
+scene.addEventListener('pointerdown',e=>{if(e.target.closest('button,.bld,.floor,.panel,.search'))return;drag=true;scene.classList.add('dragging');px=e.clientX;py=e.clientY;scene.setPointerCapture(e.pointerId);world.classList.add('noTransition')});scene.addEventListener('pointermove',e=>{if(!drag)return;rz+=(e.clientX-px)*.34;rx-=(e.clientY-py)*.26;rx=Math.max(8,Math.min(78,rx));px=e.clientX;py=e.clientY;view()});scene.addEventListener('pointerup',()=>{drag=false;scene.classList.remove('dragging');world.classList.remove('noTransition')});scene.addEventListener('pointercancel',()=>{drag=false;scene.classList.remove('dragging')});scene.addEventListener('wheel',e=>{e.preventDefault();zoom+=e.deltaY<0?.045:-.045;zoom=Math.max(.48,Math.min(1.18,zoom));view()},{passive:false});
+document.getElementById('resetView').onclick=()=>{rx=56;rz=-12;zoom=.78;view()};document.getElementById('topView').onclick=()=>{rx=9;rz=0;zoom=.82;view()};document.getElementById('tiltView').onclick=()=>{rx=56;rz=-12;zoom=.78;view()};
+// Demo
+let demoStep=0;document.getElementById('demoBtn').onclick=()=>{demoStep=(demoStep+1)%3;if(demoStep===1){document.getElementById('from').value='gate1';to.value='ab1room418';showAB1(4);route()}else if(demoStep===2){document.getElementById('from').value='ab2';to.value='mr';campus();route()}else{campus();toastMsg('Demo reset — explore the campus') }};
+// Presentation mode
+document.getElementById('presBtn').onclick=()=>document.getElementById('presentation').style.display='flex';document.getElementById('closeP').onclick=()=>document.getElementById('presentation').style.display='none';document.getElementById('helpBtn').onclick=()=>showPanel('How to use','<b>Drag</b> the campus to rotate it.<br><b>Scroll</b> to zoom.<br><b>Click</b> AB1 to inspect the building.<br><b>Choose a floor</b> to open the large floor-plan mode.<br><b>Show Route</b> previews a navigation path.<br><b>♿ Accessible</b> switches the route mode.');
+view();
+
+// V5 dedicated floor interface
+const floorModal=document.getElementById('floorModal'),fpRooms=document.getElementById('fpRooms'),fmFloorName=document.getElementById('fmFloorName'),fpHeaderFloor=document.getElementById('fpHeaderFloor'),fmSelected=document.getElementById('fmSelected'),fmSearch=document.getElementById('fmSearch'),fmResults=document.getElementById('fmResults'),fmRoute=document.getElementById('fmRoute'),fmAccess=document.getElementById('fmAccess');let currentFloor=4,selectedRoom=null,fmAccessible=false;const floorNames=['Ground Floor','1st Floor','2nd Floor','3rd Floor','4th Floor'],floorShort=['GROUND','1ST','2ND','3RD','4TH'];
+function openFloor(f=4,room=null){currentFloor=f;selectedRoom=room||null;floorModal.classList.add('open');floorModal.setAttribute('aria-hidden','false');fmSearch.value='';renderFloor(f,room)}window.openFloor=openFloor;
+function closeFloor(){floorModal.classList.remove('open');floorModal.setAttribute('aria-hidden','true');document.getElementById('fpRoute').style.display='none'}document.getElementById('floorBack').onclick=()=>{closeFloor();campus()};document.getElementById('fmClose').onclick=closeFloor;
+function roomFloor(r){const n=parseInt(r);if(!Number.isFinite(n))return 4;return n<100?0:Math.min(4,Math.max(0,Math.floor(n/100)))}
+function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function renderFloor(f,room=null){currentFloor=f;selectedRoom=room;fmFloorName.textContent=floorNames[f];fpHeaderFloor.textContent=floorShort[f]+' FLOOR';document.querySelectorAll('.floorBtn').forEach((b,i)=>b.classList.toggle('active',i===f));fpRooms.innerHTML='';document.getElementById('fpRoute').style.display='none';const list=floorRooms[f],left=list.slice(0,Math.ceil(list.length/2)),right=list.slice(Math.ceil(list.length/2)),rowH=Math.max(25,530/Math.max(left.length,right.length));function add(r,side,i){const e=document.createElement('div');e.className='fpRoom'+(String(r)===String(room)?' selected':'');e.style.left=side==='left'?'2%':'57%';e.style.width='39%';e.style.top=(66+i*rowH)+'px';e.style.height=Math.max(22,rowH-3)+'px';e.innerHTML='<span>'+r+'</span><small>'+esc(rooms[r]||'Room')+'</small>';e.onclick=()=>selectFloorRoom(r,f);fpRooms.appendChild(e)}left.forEach((r,i)=>add(r,'left',i));right.forEach((r,i)=>add(r,'right',i));[['S1','fpStair','2%','86px'],['S2','fpStair','92%','86px'],['S3','fpStair','2%','470px'],['S4','fpStair','92%','470px'],['L1','fpLift','46%','86px'],['L2','fpLift','46%','475px']].forEach(([t,c,l,tp])=>{const e=document.createElement('div');e.className=c;e.textContent=t;e.style.left=l;e.style.top=tp;e.title=c==='fpLift'?'Lift':'Staircase';fpRooms.appendChild(e)});if(f===4){const n=document.createElement('div');n.className='tag';n.style.left='40%';n.style.top='62%';n.style.background='#0e5360';n.style.borderColor='#4de8ff';n.textContent='418 • reference position';fpRooms.appendChild(n)}if(room)selectFloorRoom(room,f,true);updateFmInfo(f,room)}
+function selectFloorRoom(r,f,silent=false){selectedRoom=r;document.querySelectorAll('.fpRoom').forEach(x=>x.classList.remove('selected'));[...document.querySelectorAll('.fpRoom')].find(x=>x.querySelector('span')?.textContent===String(r))?.classList.add('selected');updateFmInfo(f,r);if(!silent)toastMsg('Room '+r+' selected')}
+function updateFmInfo(f,r){if(!r){fmSelected.innerHTML='<h3>Selected location</h3><p>Choose a room on the floor plan or search above.</p>';return}fmSelected.innerHTML=`<h3>Room ${r}</h3><p><b>${esc(rooms[r]||'Room')}</b><br>AB1 • ${floorNames[f]}<br><br>${r==='418'?'Reference position supplied by you is used for this room.':''}</p><div class="routeChoice"><button onclick="floorRoomRoute('${r}',${f})">✦ Navigate</button><button onclick="selectFloorRoom('${r}',${f})">◎ Highlight</button></div>`}
+window.floorRoomRoute=function(r,f){selectedRoom=r;renderFloor(f,r);drawFloorRoute(r,f);toastMsg('Route to Room '+r+' highlighted')};
+function drawFloorRoute(r,f){const route=document.getElementById('fpRoute'),roomEl=[...document.querySelectorAll('.fpRoom')].find(e=>e.querySelector('span')?.textContent===String(r));if(!roomEl)return;const pr=document.getElementById('floorPlan').getBoundingClientRect(),rr=roomEl.getBoundingClientRect(),sx=pr.width*.5,sy=pr.height-75,ex=rr.left-pr.left+rr.width*.5,ey=rr.top-pr.top+rr.height*.5,dx=ex-sx,dy=ey-sy;route.style.left=sx+'px';route.style.top=sy+'px';route.style.width=Math.hypot(dx,dy)+'px';route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;route.style.display='block'}
+fmRoute.onclick=()=>selectedRoom?floorRoomRoute(selectedRoom,currentFloor):toastMsg('Select a room first');fmAccess.onclick=()=>{fmAccessible=!fmAccessible;fmAccess.textContent=fmAccessible?'♿ Accessible: ON':'♿ Accessible';toastMsg(fmAccessible?'Accessible route preference enabled':'Standard route preference')};document.getElementById('fmStandard').onclick=()=>{fmAccessible=false;fmAccess.textContent='♿ Accessible';toastMsg('Standard route selected')};document.getElementById('fmAccessible').onclick=()=>{fmAccessible=true;fmAccess.textContent='♿ Accessible: ON';toastMsg('Accessible route selected')};document.querySelectorAll('.floorBtn').forEach(b=>b.onclick=()=>openFloor(+b.dataset.fmFloor));fmSearch.addEventListener('input',()=>{const q=fmSearch.value.trim().toLowerCase();fmResults.innerHTML='';if(!q)return;const hits=Object.keys(rooms).filter(k=>k.toLowerCase().includes(q)||String(rooms[k]).toLowerCase().includes(q)).slice(0,8);hits.forEach(r=>{const d=document.createElement('div');d.className='roomResult';d.innerHTML=`<b>Room ${r}</b> · ${esc(rooms[r])}<br><span class="tip2">${floorNames[roomFloor(r)]}</span>`;d.onclick=()=>openFloor(roomFloor(r),r);fmResults.appendChild(d)});if(!hits.length)fmResults.innerHTML='<div class="floorNote">No matching room in the current AB1 directory.</div>'});
+// V4 controls
+const videoModal=document.getElementById('videoModal'),refModal=document.getElementById('refModal'),stepsModal=document.getElementById('stepsModal'),demoVideo=document.getElementById('demoVideo');
+document.getElementById('videoBtn').onclick=()=>{videoModal.style.display='grid';demoVideo.currentTime=0;demoVideo.play().catch(()=>{})};
+document.getElementById('closeVideo').onclick=()=>{demoVideo.pause();videoModal.style.display='none'};
+document.getElementById('refBtn').onclick=()=>refModal.style.display='grid';document.getElementById('closeRef').onclick=()=>refModal.style.display='none';
+document.getElementById('routeStepsBtn').onclick=()=>stepsModal.style.display='grid';document.getElementById('closeSteps').onclick=()=>stepsModal.style.display='none';
+document.getElementById('focusBtn').onclick=()=>{showAB1();rx=56;rz=-12;zoom=.9;view();toastMsg('AB1 focused — drag to rotate')};
+[videoModal,refModal,stepsModal].forEach(m=>m.addEventListener('click',e=>{if(e.target===m){m.style.display='none';if(m===videoModal)demoVideo.pause()}}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){[videoModal,refModal,stepsModal].forEach(m=>m.style.display='none');demoVideo.pause()} if(e.key.toLowerCase()==='v')document.getElementById('videoBtn').click(); if(e.key.toLowerCase()==='r')document.getElementById('resetView').click()});
+
+// ===== V6 behavior: augment V5 without removing its existing features =====
+const v6Paths={
+ gate1_ab1main:[[490,615],[555,580],[610,540],[640,505]],
+ gate1_ab1accounts:[[490,615],[555,580],[595,545],[610,505]],
+ gate1_ab2:[[490,615],[455,585],[420,545],[410,495]],
+ ab2_ab1accounts:[[410,495],[455,485],[510,480],[595,505]],
+ ab2_mr:[[410,495],[355,500],[305,515],[275,540]],
+ gate1_mr:[[490,615],[430,600],[355,575],[275,540]],
+ gate2_workshop:[[955,335],[900,335],[835,325],[770,300]],
+ gate2_ab1accounts:[[955,335],[900,350],[800,405],[610,505]]
+};
+function setRouteSvg(points,label,access){
+ const p=document.getElementById('routePath'),a=document.getElementById('routeStart'),b=document.getElementById('routeEnd'),t=document.getElementById('routeLabel');
+ if(!p)return; p.setAttribute('points',points.map(x=>x.join(',')).join(' '));p.classList.toggle('accessible',!!access);a.classList.toggle('accessible',!!access);b.classList.toggle('accessible',!!access);a.setAttribute('cx',points[0][0]);a.setAttribute('cy',points[0][1]);b.setAttribute('cx',points.at(-1)[0]);b.setAttribute('cy',points.at(-1)[1]);t.setAttribute('x',points[Math.floor(points.length/2)][0]);t.setAttribute('y',points[Math.floor(points.length/2)][1]-13);t.textContent=label||'ROUTE';p.style.display='block';a.style.display='block';b.style.display='block';t.style.display='block';
+}
+function clearSvgRoute(){['routePath','routeStart','routeEnd','routeLabel'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none'})}
+// Replace V5 generic route drawing with location-aware campus polylines.
+const oldDrawRoute=drawRoute;
+drawRoute=function(t){
+ const f=document.getElementById('from').value,d=document.getElementById('to').value;
+ let pts=null,label='ROUTE';
+ if(f==='gate1'&&d==='ab1main'){pts=v6Paths.gate1_ab1main;label='GATE 1 → AB1 MAIN'}
+ else if(f==='gate1'&&d==='ab1accounts'){pts=v6Paths.gate1_ab1accounts;label='GATE 1 → ACCOUNTS-SIDE'}
+ else if((f==='gate1'&&d==='ab2')||(f==='ab2'&&d==='gate1')){pts=v6Paths.gate1_ab2;label='GATE 1 → AB2'}
+ else if(f==='ab2'&&d==='ab1accounts'){pts=v6Paths.ab2_ab1accounts;label='AB2 → AB1 ACCOUNTS-SIDE'}
+ else if(f==='ab2'&&d==='mr'){pts=v6Paths.ab2_mr;label='AB2 → M & R'}
+ else if(f==='gate1'&&d==='mr'){pts=v6Paths.gate1_mr;label='GATE 1 → M & R'}
+ else if(f==='gate2'&&d==='workshop'){pts=v6Paths.gate2_workshop;label='GATE 2 → WORKSHOP'}
+ else if(f==='gate2'&&d==='ab1accounts'){pts=v6Paths.gate2_ab1accounts;label='GATE 2 → AB1 ACCOUNTS-SIDE'}
+ if(pts){setRouteSvg(pts,label,accessible);document.getElementById('routeLine').style.display='none';document.getElementById('node1').style.display='none';document.getElementById('node2').style.display='none';return}
+ // For room navigation, show a campus-to-entrance route then use floor modal for the vertical segment.
+ if(d.startsWith('ab1room')){const base=accessible?v6Paths.gate1_ab1main:v6Paths.gate1_ab1main;setRouteSvg(base,'GATE 1 → AB1 MAIN',accessible);return}
+ oldDrawRoute(t);
+};
+// AB1 dedicated 3D model
+const ab1Mode=document.getElementById('ab1Mode'),ab1World=document.getElementById('ab1World'),ab1Viewer=document.getElementById('ab1Viewer');let aRx=58,aRz=-18,aZoom=.86,aDrag=false,aPX=0,aPY=0,exploded=false;
+function ab1View(){ab1World.style.transform=`rotateX(${aRx}deg) rotateZ(${aRz}deg) scale(${aZoom})`}
+function openAB1Model(){ab1Mode.classList.add('open');aRx=58;aRz=-18;aZoom=.86;exploded=false;ab1World.classList.remove('exploded');ab1View()}
+function closeAB1Model(){ab1Mode.classList.remove('open')}
+document.getElementById('ab1ModelBtn').onclick=openAB1Model;document.getElementById('ab1Btn').onclick=()=>{showAB1();openAB1Model();toastMsg('AB1 3D model opened')};document.getElementById('ab1Close3D').onclick=closeAB1Model;document.getElementById('ab1Reset3D').onclick=()=>{aRx=58;aRz=-18;aZoom=.86;exploded=false;ab1World.classList.remove('exploded');ab1View()};document.getElementById('ab1Top3D').onclick=()=>{aRx=10;aRz=0;aZoom=.88;ab1View()};document.getElementById('ab1Explode').onclick=()=>{exploded=!exploded;ab1World.classList.toggle('exploded',exploded);toastMsg(exploded?'Exploded floor view':'Stacked building view')};document.getElementById('ab1OpenFloor').onclick=()=>{closeAB1Model();openFloor(4,'418')};document.getElementById('ab1RoomPin').onclick=()=>{closeAB1Model();openFloor(4,'418')};document.querySelectorAll('.floorSlab').forEach(e=>e.onclick=()=>{closeAB1Model();openFloor(+e.dataset.f)});
+ab1Viewer.addEventListener('pointerdown',e=>{if(e.target.closest('.floorSlab,.ab1RoomPin,.ab1Actions'))return;aDrag=true;aPX=e.clientX;aPY=e.clientY;ab1Viewer.classList.add('dragging');ab1Viewer.setPointerCapture(e.pointerId)});ab1Viewer.addEventListener('pointermove',e=>{if(!aDrag)return;aRz+=(e.clientX-aPX)*.35;aRx-=(e.clientY-aPY)*.25;aRx=Math.max(8,Math.min(78,aRx));aPX=e.clientX;aPY=e.clientY;ab1View()});['pointerup','pointercancel'].forEach(ev=>ab1Viewer.addEventListener(ev,()=>{aDrag=false;ab1Viewer.classList.remove('dragging')}));ab1Viewer.addEventListener('wheel',e=>{e.preventDefault();aZoom+=e.deltaY<0?.05:-.05;aZoom=Math.max(.55,Math.min(1.15,aZoom));ab1View()},{passive:false});
+// Exploded spacing.
+const style=document.createElement('style');style.textContent='.ab1World.exploded .fl0{transform:translateZ(-15px)}.ab1World.exploded .fl1{transform:translateZ(70px) translateY(-12px)}.ab1World.exploded .fl2{transform:translateZ(155px) translateY(-24px)}.ab1World.exploded .fl3{transform:translateZ(240px) translateY(-36px)}.ab1World.exploded .fl4{transform:translateZ(325px) translateY(-48px)}';document.head.appendChild(style);
+// Route details modal uses current selections and explains known / schematic portions.
+const routeDetailsModal=document.getElementById('routeDetailsModal'),factsModal=document.getElementById('factsModal');
+function routeDetails(){const f=document.getElementById('from').value,d=document.getElementById('to').value;const fromName=document.querySelector('#from option:checked')?.textContent||f;const toName=document.querySelector('#to option:checked')?.textContent||d;let steps=[];if(f==='gate1'&&d==='ab1room418'){steps=['Gate 1','Campus road toward AB1','AB1 Main Entrance','Main Lift','4th Floor','Room 418']}else if(f==='ab2'&&d==='ab1accounts'){steps=['AB2','Use the road between AB2 and AB1','Accounts & Offices side','AB1 entrance beside Accounts & Offices']}else if(f==='ab2'&&d==='mr'){steps=['AB2','Skywalk link','M & R']}else if(f==='gate1'&&d==='ab2'){steps=['Gate 1','Campus road','AB2']}else{steps=[fromName,toName]};document.getElementById('routeDetailsContent').innerHTML='<b>'+fromName+' → '+toName+'</b><div class="routeStepsMini">'+steps.map((s,i)=>`<div class="routeStepMini"><i>${i+1}</i><span>${s}</span></div>`).join('')+'</div><div style="margin-top:10px;color:#71809b;font-size:9px">'+(accessible?'♿ Accessible mode: lift is preferred for the vertical AB1 movement where available.':'🚶 Standard mode: route follows the supplied campus connections. Exact corridor distances are not claimed.')+'</div>';routeDetailsModal.style.display='grid'}
+document.getElementById('routeDetailsBtn').onclick=routeDetails;document.getElementById('closeRouteDetails').onclick=()=>routeDetailsModal.style.display='none';document.getElementById('campusFactsBtn').onclick=()=>factsModal.style.display='grid';document.getElementById('closeFacts').onclick=()=>factsModal.style.display='none';
+// Clear both V5 and V6 route graphics.
+const oldClear=document.getElementById('clearBtn');oldClear.addEventListener('click',clearSvgRoute);
+// Make campus button explicitly close the AB1 3D overlay.
+document.getElementById('campusBtn').addEventListener('click',closeAB1Model);
+// Keyboard shortcut: B opens AB1 3D, Esc closes overlays.
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Model();if(e.key==='Escape'){closeAB1Model();routeDetailsModal.style.display='none';factsModal.style.display='none'}});
+
+
+/* CAMPUS ORBIT V8 ENHANCEMENT — LIFT ACCESS + SMART GUIDANCE */
+(function(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .ieAccessChoice{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+    .ieAccessChoice button{border:1px solid #30415f;background:#101a2d;color:#dce8ff;border-radius:9px;padding:8px;cursor:pointer;font-size:10px}
+    .ieAccessChoice button.active{border-color:#4de8ff;background:#123447}
+    .ieAccessNote{margin-top:8px;padding:8px;border-radius:9px;background:#0b1425;border:1px solid #293957;color:#91a2c0;font-size:9px;line-height:1.45}
+    .ieLift.teacher{border-color:#ff9d5c!important;background:#5a351f!important}
+    .ieLift.student{border-color:#5cffaa!important;background:#124334!important}
+    .ieRouteLine{animation:routePulse 1s linear infinite}
+    @keyframes routePulse{0%{filter:brightness(1)}50%{filter:brightness(1.8)}100%{filter:brightness(1)}}
+    .ieGuideStep.active{border-color:#4de8ff!important;box-shadow:0 0 18px #4de8ff22}
+  `;
+  document.head.appendChild(style);
+
+  window.CampusOrbitUserType='student';
+
+  // Add a compact user-type selector to the Indoor Explorer's right panel.
+  const selected=document.getElementById('ieSelected');
+  if(selected){
+    const box=document.createElement('div');
+    box.id='ieUserTypeBox';
+    box.className='ieAccessChoice';
+    box.innerHTML='<button id="ieStudentBtn" class="active">🎓 Student</button><button id="ieTeacherBtn">👨‍🏫 Teacher</button>';
+    selected.parentElement.appendChild(box);
+    const note=document.createElement('div');
+    note.id='ieLiftNote';
+    note.className='ieAccessNote';
+    note.textContent='Student mode: teacher-only lift is excluded from routes. The other lift may be used.';
+    selected.parentElement.appendChild(note);
+
+    document.getElementById('ieStudentBtn').onclick=()=>{
+      window.CampusOrbitUserType='student';
+      document.getElementById('ieStudentBtn').classList.add('active');
+      document.getElementById('ieTeacherBtn').classList.remove('active');
+      document.getElementById('ieLiftNote').textContent='Student mode: teacher-only lift is excluded from routes. The other lift may be used.';
+      if(window.ieRoom && typeof window.ieSelectRoom==='function') window.ieSelectRoom(window.ieRoom,window.ieFloor);
+      toastMsg('Student navigation enabled');
+    };
+    document.getElementById('ieTeacherBtn').onclick=()=>{
+      window.CampusOrbitUserType='teacher';
+      document.getElementById('ieTeacherBtn').classList.add('active');
+      document.getElementById('ieStudentBtn').classList.remove('active');
+      document.getElementById('ieLiftNote').textContent='Teacher mode: both lifts are available.';
+      if(window.ieRoom && typeof window.ieSelectRoom==='function') window.ieSelectRoom(window.ieRoom,window.ieFloor);
+      toastMsg('Teacher navigation enabled');
+    };
+  }
+
+  // Wrap the existing room selection to enforce lift access in the displayed route.
+  const waitForFn=setInterval(()=>{
+    if(typeof window.ieSelectRoom!=='function') return;
+    clearInterval(waitForFn);
+    const original=window.ieSelectRoom;
+    window.ieSelectRoom=function(r,f){
+      original(r,f);
+      const steps=document.getElementById('ieRouteSteps');
+      if(!steps) return;
+      if(window.CampusOrbitUserType==='student'){
+        steps.innerHTML=
+          '<div class="ieStep"><i>1</i><span>Start at an AB1 entrance</span></div>'+
+          '<div class="ieStep"><i>2</i><span>Use the student-accessible lift or a staircase to '+(window.ieFloorShort?.[f]||['GROUND','1ST','2ND','3RD','4TH'][f])+' floor</span></div>'+
+          '<div class="ieStep"><i>3</i><span>Follow the indoor path to Room '+r+'</span></div>';
+      }else{
+        steps.innerHTML=
+          '<div class="ieStep"><i>1</i><span>Start at an AB1 entrance</span></div>'+
+          '<div class="ieStep"><i>2</i><span>Use either available lift or a staircase to '+(window.ieFloorShort?.[f]||['GROUND','1ST','2ND','3RD','4TH'][f])+' floor</span></div>'+
+          '<div class="ieStep"><i>3</i><span>Follow the indoor path to Room '+r+'</span></div>';
+      }
+    };
+  },50);
+})();
+
+/* AB1 INDOOR EXPLORER JS */
+const ie=document.getElementById('ab1Explore'),ieWorld=document.getElementById('ieWorld'),ieViewer=document.getElementById('ieViewer');
+const ieSelected=document.getElementById('ieSelected'),ieResults=document.getElementById('ieResults'),ieSearch=document.getElementById('ieSearch'),ieStatus=document.getElementById('ieStatus'),ieRouteSteps=document.getElementById('ieRouteSteps');
+let ieFloor=-1,ieRoom=null,ieRX=62,ieRZ=-14,ieZoom=.82,ieDrag=false,iePX=0,iePY=0,ieAccessible=false,ieAutoTimer=null; window.ieFloor=ieFloor; window.ieRoom=ieRoom;
+const ieFloorColors=['#203d62','#244c6a','#31476f','#3f4778','#51446f'],ieFloorShort=['GROUND','1ST','2ND','3RD','4TH']; window.ieFloorShort=ieFloorShort;
+function ieSetTransform(){ieWorld.style.transform=`rotateX(${ieRX}deg) rotateZ(${ieRZ}deg) scale(${ieZoom})`}
+function ieRoomLabel(r){return rooms[r]||'Room'}
+function buildIndoor(){
+  ieWorld.innerHTML='';
+  for(let f=0;f<5;f++){
+    const slab=document.createElement('div');slab.className='ieFloor';slab.dataset.floor=f;slab.style.transform=`translateZ(${f*62-124}px)`;slab.style.background=`linear-gradient(145deg,${ieFloorColors[f]},#0b1629)`;
+    const head=document.createElement('div');head.className='ieFloorHead';head.innerHTML=`<b>${ieFloorShort[f]} FLOOR</b><span>${f===4?'401–438':f===3?'301–333':f===2?'201–235':f===1?'101–139':'001–027'}</span>`;slab.appendChild(head);
+    const badge=document.createElement('div');badge.className='ieFloorBadge';badge.textContent=`F${f}`;slab.appendChild(badge);
+    const list=floorRooms[f], left=list.slice(0,Math.ceil(list.length/2)), right=list.slice(Math.ceil(list.length/2));
+    [left,right].forEach((arr,side)=>arr.forEach((r,i)=>{
+      const e=document.createElement('div');e.className='ieRoom';e.dataset.room=r;e.dataset.floor=f;e.style.left=(side?54:18)+'%';e.style.top=(48+i*(270/Math.max(arr.length,1)))+'px';e.style.width='40%';e.style.height=Math.max(25,240/Math.max(arr.length,1))+'px';e.innerHTML=`<b>${r}</b><small>${ieRoomLabel(r)}</small>`;e.onclick=ev=>{ev.stopPropagation();ieSelectRoom(r,f)};slab.appendChild(e);
+    }));
+    [['S1','s1'],['S2','s2'],['S3','s3'],['S4','s4']].forEach(([txt,cl])=>{const e=document.createElement('div');e.className='ieConnector ieStair '+cl;e.textContent=txt;e.onclick=()=>ieConnectorInfo(txt,'Staircase',f);slab.appendChild(e)});
+    [['L1','l1'],['L2','l2']].forEach(([txt,cl])=>{const e=document.createElement('div');e.className='ieConnector ieLift '+cl;e.textContent=txt;e.onclick=()=>ieConnectorInfo(txt,'Lift',f);slab.appendChild(e)});
+    if(f===4){const pin=document.createElement('div');pin.className='ieRoom selected';pin.dataset.room='418';pin.dataset.floor='4';pin.style.left='42%';pin.style.top='198px';pin.style.width='15%';pin.style.height='36px';pin.innerHTML='<b>418</b><small>REFERENCE</small>';pin.onclick=ev=>{ev.stopPropagation();ieSelectRoom('418',4)};slab.appendChild(pin)}
+    ieWorld.appendChild(slab);
+  }
+  ieApplyFloor();ieSetTransform();
+}
+function ieApplyFloor(){
+  document.querySelectorAll('.ieFloorTab').forEach(b=>b.classList.toggle('active',+b.dataset.ieFloor===ieFloor));
+  document.querySelectorAll('.ieFloor').forEach((slab,f)=>{slab.classList.toggle('hidden',ieFloor!==-1&&f!==ieFloor);slab.classList.toggle('focused',ieFloor===f);slab.style.transform=`translateZ(${ieFloor===-1?f*62-124:(f-ieFloor)*25}px)`});
+  ieStatus.textContent=ieFloor===-1?'All floors · drag to rotate · scroll to zoom':`${ieFloorShort[ieFloor]} FLOOR · click a room to inspect`;
+}
+function ieSelectRoom(r,f){ window.ieRoom=r; window.ieFloor=f;
+  ieRoom=r;ieFloor=f;ieApplyFloor();document.querySelectorAll('.ieRoom').forEach(x=>x.classList.toggle('selected',x.dataset.room===String(r)&&+x.dataset.floor===f));
+  ieSelected.innerHTML=`<h4>Room ${r}</h4><p><b>${esc(ieRoomLabel(r))}</b><br>AB1 · ${ieFloorShort[f]} Floor${r==='418'?'<br><br><b style="color:#ff58c7">● Supplied reference position</b>':''}</p>`;
+  ieRouteSteps.innerHTML=`<div class="ieStep"><i>1</i><span>Start at an AB1 entrance</span></div><div class="ieStep"><i>2</i><span>${ieAccessible?'Use a lift':'Choose a stair or lift'} to ${ieFloorShort[f]} floor</span></div><div class="ieStep"><i>3</i><span>Follow the indoor path to Room ${r}</span></div>`;ieStatus.textContent=`Room ${r} selected · ${ieRoomLabel(r)}`;ieDrawRoute();
+}
+function ieConnectorInfo(label,type,f){ieFloor=f;ieApplyFloor();ieRoom=null;ieSelected.innerHTML=`<h4>${label} · ${type}</h4><p>AB1 · ${ieFloorShort[f]} Floor<br><br>${type==='Lift'?'Vertical connector available inside AB1. Accessible navigation prefers this connector.':'Staircase connector represented on this floor.'}</p>`;ieRouteSteps.innerHTML=`<div class="ieStep"><i>1</i><span>Selected ${label}</span></div><div class="ieStep"><i>2</i><span>Use it for vertical movement</span></div>`}
+function ieDrawRoute(){document.querySelectorAll('.ieRouteLine').forEach(x=>x.remove());if(!ieRoom)return;const slab=document.querySelector(`.ieFloor[data-floor="${ieFloor}"]`),room=slab?.querySelector(`.ieRoom[data-room="${CSS.escape(String(ieRoom))}"]`);if(!room)return;const center=document.getElementById('ieCenter').getBoundingClientRect(),a=slab.getBoundingClientRect(),b=room.getBoundingClientRect(),sx=a.left-center.left+a.width*.5,sy=a.top-center.top+a.height*.84,ex=b.left-center.left+b.width*.5,ey=b.top-center.top+b.height*.5,dx=ex-sx,dy=ey-sy,line=document.createElement('div');line.className='ieRouteLine play';line.style.left=sx+'px';line.style.top=sy+'px';line.style.width=Math.hypot(dx,dy)+'px';line.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;document.getElementById('ieCenter').appendChild(line)}
+function openIndoorExplorer(f=4,r='418'){ie.classList.add('open');ie.setAttribute('aria-hidden','false');ieFloor=f;ieRoom=r;ieRX=62;ieRZ=-14;ieZoom=.82;ieAccessible=false;buildIndoor();ieSelectRoom(r,f)}
+window.openIndoorExplorer=openIndoorExplorer;
+document.getElementById('launchIndoor').onclick=()=>{closeAB1Model();openIndoorExplorer(4,'418')};
+document.getElementById('ieClose').onclick=()=>{ie.classList.remove('open');ie.setAttribute('aria-hidden','true');clearInterval(ieAutoTimer)};
+document.getElementById('ieReset').onclick=()=>{ieFloor=-1;ieRoom=null;ieRX=62;ieRZ=-14;ieZoom=.82;buildIndoor();ieSelected.innerHTML='<h4>Selected location</h4><p>Select a room, floor or connector to inspect it.</p>';ieRouteSteps.innerHTML='<div class="ieStep"><i>1</i><span>Select a room</span></div><div class="ieStep"><i>2</i><span>Choose route</span></div>'};
+document.querySelectorAll('.ieFloorTab').forEach(b=>b.onclick=()=>{ieFloor=+b.dataset.ieFloor;ieRoom=null;ieApplyFloor();document.querySelectorAll('.ieRouteLine').forEach(x=>x.remove())});
+document.getElementById('ieTop').onclick=()=>{ieRX=8;ieRZ=0;ieZoom=.86;ieSetTransform()};document.getElementById('ieTilt').onclick=()=>{ieRX=62;ieRZ=-14;ieZoom=.82;ieSetTransform()};document.getElementById('ieExplode').onclick=()=>{ieFloor=-1;ieRoom=null;ieApplyFloor();ieRX=62;ieRZ=-14;ieZoom=.82;ieSetTransform();toastMsg('AB1 floors exploded')};
+document.getElementById('ieAccess').onclick=()=>{ieAccessible=!ieAccessible;document.getElementById('ieAccess').textContent=ieAccessible?'♿ Accessible ON':'♿ Accessible';if(ieRoom)ieSelectRoom(ieRoom,ieFloor);toastMsg(ieAccessible?'Accessible route preference enabled':'Standard route preference')};
+document.getElementById('ieRoute').onclick=()=>{if(!ieRoom){toastMsg('Select a room first');return}ieDrawRoute();toastMsg(`Route to Room ${ieRoom} highlighted`)};
+ieSearch.addEventListener('input',()=>{const q=ieSearch.value.trim().toLowerCase();ieResults.innerHTML='';if(!q)return;const hits=Object.keys(rooms).filter(r=>r.toLowerCase().includes(q)||String(rooms[r]).toLowerCase().includes(q)).slice(0,8);hits.forEach(r=>{const f=roomFloor(r),d=document.createElement('div');d.className='ieResult';d.innerHTML=`<b>Room ${r}</b><span>${esc(rooms[r])} · ${ieFloorShort[f]} Floor</span>`;d.onclick=()=>{ieSearch.value='';ieResults.innerHTML='';ieSelectRoom(r,f)};ieResults.appendChild(d)});if(!hits.length)ieResults.innerHTML='<div class="ieHint">No matching AB1 room found in the supplied directory.</div>'});
+ieViewer.addEventListener('pointerdown',e=>{if(e.target.closest('.ieRoom,.ieConnector,.ieCenterBar'))return;ieDrag=true;iePX=e.clientX;iePY=e.clientY;ieViewer.classList.add('dragging');ieWorld.classList.add('noAnim');ieViewer.setPointerCapture(e.pointerId)});
+ieViewer.addEventListener('pointermove',e=>{if(!ieDrag)return;ieRZ+=(e.clientX-iePX)*.3;ieRX-=(e.clientY-iePY)*.23;ieRX=Math.max(8,Math.min(78,ieRX));iePX=e.clientX;iePY=e.clientY;ieSetTransform()});['pointerup','pointercancel'].forEach(ev=>ieViewer.addEventListener(ev,()=>{ieDrag=false;ieViewer.classList.remove('dragging');ieWorld.classList.remove('noAnim')}));
+ieViewer.addEventListener('wheel',e=>{e.preventDefault();ieZoom+=e.deltaY<0?.045:-.045;ieZoom=Math.max(.52,Math.min(1.18,ieZoom));ieSetTransform()},{passive:false});
+document.getElementById('ieAuto').onclick=()=>{clearInterval(ieAutoTimer);let seq=[-1,0,1,2,3,4],i=0;ieAutoTimer=setInterval(()=>{ieFloor=seq[i];ieApplyFloor();if(ieFloor===4)ieSelectRoom('418',4);i++;if(i>=seq.length){clearInterval(ieAutoTimer);toastMsg('Guided AB1 exploration complete')}},950);toastMsg('Guided exploration started')};
+
+</script>
+
+<!-- V9 MOBILE NAVIGATION -->
+<div id="mobileRouteSheet" aria-hidden="true">
+  <h3>🧭 Navigate around campus</h3>
+  <div class="mField"><label>Start from</label><select id="mFrom">
+    <option value="gate1">Gate 1</option><option value="gate2">Gate 2</option><option value="ab1main">AB1 Main Entrance</option><option value="ab1accounts">AB1 Accounts-side Entrance</option><option value="ab2">AB2</option><option value="mr">M & R</option>
+  </select></div>
+  <div class="mField"><label>Destination</label><select id="mTo">
+    <option value="ab1room418">AB1 • Room 418</option><option value="ab1room219">AB1 • Room 219</option><option value="ab1room116">AB1 • Room 116</option><option value="ab1room223">AB1 • Room 223</option><option value="ab1main">AB1 Main Entrance</option><option value="ab1accounts">AB1 Accounts-side Entrance</option><option value="ab2">AB2</option><option value="mr">M & R</option><option value="caf">Cafeteria</option><option value="workshop">Workshop</option><option value="girls">Girl's Hostel</option><option value="boys">Boys Hostel</option><option value="stationery">Stationery</option><option value="gate2">Gate 2</option>
+  </select></div>
+  <div class="mActions"><button id="mAccess">♿ Accessible: OFF</button><button id="mStart" class="primary">▶ Start Route</button></div>
+</div>
+<nav id="mobileMainNav" aria-label="Mobile navigation">
+  <button id="mHome" class="active"><b>⌂</b><span>Home</span></button>
+  <button id="mMap"><b>🗺</b><span>Map</span></button>
+  <button id="mNav"><b>🧭</b><span>Navigate</span></button>
+  <button id="mAB1"><b>🏢</b><span>AB1</span></button>
+</nav>
+
+<script>
+/* V9 mobile controller — keeps the V8 desktop logic intact */
+(function(){
+  const sheet=document.getElementById('mobileRouteSheet');
+  const nav=document.getElementById('mobileMainNav');
+  if(!sheet||!nav)return;
+  const buttons=[...nav.querySelectorAll('button')];
+  function active(id){buttons.forEach(b=>b.classList.toggle('active',b.id===id));}
+  function closeSheet(){sheet.classList.remove('open');sheet.setAttribute('aria-hidden','true')}
+  function openSheet(){sheet.classList.add('open');sheet.setAttribute('aria-hidden','false')}
+  document.getElementById('mHome').onclick=()=>{active('mHome');closeSheet();if(typeof campus==='function')campus();window.scrollTo(0,0)};
+  document.getElementById('mMap').onclick=()=>{active('mMap');closeSheet();document.getElementById('scene')?.scrollIntoView({block:'center'});toastMsg('Campus map')};
+  document.getElementById('mNav').onclick=()=>{active('mNav');sheet.classList.toggle('open');sheet.setAttribute('aria-hidden',String(!sheet.classList.contains('open')))};
+  document.getElementById('mAB1').onclick=()=>{active('mAB1');closeSheet();if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418')};
+  let mAccess=false;
+  document.getElementById('mAccess').onclick=()=>{mAccess=!mAccess;document.getElementById('mAccess').textContent='♿ Accessible: '+(mAccess?'ON':'OFF');if(typeof accessible!=='undefined'){window.accessible=mAccess;const a=document.getElementById('accessBtn');if(a)a.textContent='♿ Accessible Route: '+(mAccess?'ON':'OFF')}toastMsg(mAccess?'Accessible route enabled':'Accessible route disabled')};
+  document.getElementById('mStart').onclick=()=>{
+    const f=document.getElementById('mFrom').value,d=document.getElementById('mTo').value;
+    const mainFrom=document.getElementById('from'),mainTo=document.getElementById('to');
+    if(mainFrom)mainFrom.value=f;
+    if(mainTo){mainTo.value=d;if(![...mainTo.options].some(o=>o.value===d)){const o=document.createElement('option');o.value=d;o.textContent=d;mainTo.appendChild(o);mainTo.value=d}}
+    closeSheet();
+    if(d.startsWith('ab1room')){
+      const r=d.replace('ab1room','');
+      const n=parseInt(r,10);const floor=r==='418'?4:r==='219'||r==='223'?2:r==='116'?1:(Number.isFinite(n)?Math.min(4,Math.max(0,Math.floor(n/100))):4);
+      if(typeof openIndoorExplorer==='function'){openIndoorExplorer(floor,r);toastMsg('Indoor route to Room '+r)}
+      return;
+    }
+    if(typeof route==='function'){route();toastMsg('Route preview ready')}
+  };
+  /* mobile-friendly global search: tapping the desktop search still works */
+  const search=document.getElementById('search');
+  if(search)search.addEventListener('focus',()=>{active('mMap')});
+})();
+</script>
+
+<!-- V10 MOBILE-FIRST SHELL -->
+<section id="mobileShell" aria-label="Campus Orbit mobile app">
+  <header class="mHeader">
+    <div class="mBrand"><div class="mLogo">◎</div><div><h1>Campus Orbit</h1><p>Campus wayfinding</p></div></div>
+    <div class="mOffline">● OFFLINE</div>
+  </header>
+  <div class="mScroll" id="mHomeScroll">
+    <div class="mSearch"><span>⌕</span><input id="mGlobalSearch" placeholder="Search room, lab, building…" autocomplete="off"></div>
+    <div class="mGreeting"><h2>Where do you need to go?</h2><p>Find a building or room without asking around.</p></div>
+    <div class="mQuick">
+      <button data-action="navigate"><b>🧭</b>Navigate</button>
+      <button data-action="ab1"><b>🏢</b>AB1</button>
+      <button data-action="map"><b>🗺️</b>Map</button>
+      <button data-action="demo"><b>▶</b>Demo</button>
+    </div>
+    <section class="mCard">
+      <div class="mCardHead"><h3>Campus map</h3><span>Original layout</span></div>
+      <div class="mMapFrame"><img src="CampusLayoutReference.png" alt="Original campus layout showing Gate 1, Gate 2, Gate 3, Gate 4, AB1, AB2, M&R, hostels and workshop"><div class="mMapBadge">📍 Campus reference</div><div class="mMapHint">Tap Map for full view</div></div>
+      <div class="mInfoGrid"><div class="mInfoBox"><b>Gate 1</b><span>Main entrance / commonly used return gate</span></div><div class="mInfoBox"><b>Gate 2</b><span>Major recess-side access</span></div><div class="mInfoBox"><b>AB1</b><span>5 floors • rooms searchable</span></div><div class="mInfoBox"><b>AB2 → AB1</b><span>Use the road to Accounts-side entrance</span></div></div>
+    </section>
+    <div class="mSectionTitle">Quick navigation</div>
+    <div class="mTools">
+      <button class="mTool" data-action="route418"><b>🎯 Gate 1 → Room 418</b><span>Open the complete AB1 route example.</span></button>
+      <button class="mTool" data-action="ab1"><b>🏢 Explore AB1</b><span>Floors, rooms, lifts and stairs.</span></button>
+      <button class="mTool" data-action="map"><b>🗺️ Original campus map</b><span>Use the supplied map as a clear mobile reference.</span></button>
+      <button class="mTool" data-action="demo"><b>▶ Watch demo</b><span>See the interaction flow from the supplied video.</span></button>
+    </div>
+    <div class="mSectionTitle">Accessibility</div>
+    <section class="mCard" style="padding:13px 14px"><b style="font-size:11px">♿ Accessible navigation</b><p style="font-size:9px;line-height:1.45;color:#718096;margin:5px 0 0">Use the accessible route option to prefer lift-based vertical movement where available. The prototype does not claim surveyed corridor measurements.</p></section>
+  </div>
+  <nav class="mBottom" aria-label="Mobile navigation">
+    <button class="active" data-tab="home"><b>⌂</b>Home</button>
+    <button data-tab="map"><b>🗺️</b>Map</button>
+    <button data-tab="navigate"><b>🧭</b>Navigate</button>
+    <button data-tab="ab1"><b>🏢</b>AB1</button>
+    <button data-tab="demo"><b>▶</b>Demo</button>
+  </nav>
+</section>
+<div class="mOverlay" id="mobileMapOverlay"><div class="mOverlayHead"><button class="mBack" data-close="mobileMapOverlay">‹</button><div><h2>Campus map</h2><p>Original map supplied for the prototype</p></div></div><div class="mOverlayBody"><div class="mMapLarge"><img src="CampusLayoutReference.png" alt="Original campus layout reference"></div><div class="mMapNote">Scroll horizontally if needed to inspect the full layout. This image is the original supplied campus reference used for building placement.</div></div></div>
+<div class="mOverlay" id="mobileDemoOverlay"><div class="mOverlayHead"><button class="mBack" data-close="mobileDemoOverlay">‹</button><div><h2>Campus Orbit demo</h2><p>Supplied interaction reference</p></div></div><div class="mOverlayBody mDemo"><video controls playsinline preload="metadata"><source src="CampusOrbit_Demo.mp4" type="video/mp4"></video><div class="mDemoNote">Use this demo as the interaction reference. Campus Orbit keeps the supplied campus layout while making the student flow simpler on mobile.</div></div></div>
+<script>
+(function(){
+ const shell=document.getElementById('mobileShell'); if(!shell)return;
+ const sheet=document.getElementById('mobileRouteSheet');
+ function closeOverlays(){document.querySelectorAll('.mOverlay.open').forEach(x=>x.classList.remove('open'));}
+ function setTab(tab){document.querySelectorAll('.mBottom button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));}
+ function openMap(){closeOverlays();document.getElementById('mobileMapOverlay').classList.add('open');setTab('map');}
+ function openDemo(){closeOverlays();document.getElementById('mobileDemoOverlay').classList.add('open');setTab('demo');}
+ function openNav(){setTab('navigate');sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');}
+ function openAB1(){setTab('ab1');if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418');}
+ function start418(){setTab('navigate');document.getElementById('mFrom').value='gate1';document.getElementById('mTo').value='ab1room418';sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');setTimeout(()=>{if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418')},180);}
+ document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='map')openMap();else if(a==='demo')openDemo();else if(a==='ab1')openAB1();else if(a==='navigate')openNav();else if(a==='route418')start418();}));
+ document.querySelectorAll('.mBottom button').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.tab;if(t==='home'){setTab('home');closeOverlays();sheet.classList.remove('open');document.getElementById('mHomeScroll').scrollTo({top:0,behavior:'smooth'});}else if(t==='map')openMap();else if(t==='demo')openDemo();else if(t==='navigate')openNav();else if(t==='ab1')openAB1();}));
+ document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>{document.getElementById(b.dataset.close).classList.remove('open');}));
+ document.getElementById('mGlobalSearch').addEventListener('keydown',e=>{if(e.key!=='Enter')return;const q=e.target.value.trim();if(!q)return;let room=q.match(/\b(\d{3})\b/);if(room&&typeof openIndoorExplorer==='function'){const n=+room[1],f=n<100?0:Math.min(4,Math.max(0,Math.floor(n/100)));openAB1();setTimeout(()=>openIndoorExplorer(f,room[1]),80);}else{openNav();const opt=[...document.getElementById('mTo').options].find(o=>o.textContent.toLowerCase().includes(q.toLowerCase()));if(opt)document.getElementById('mTo').value=opt.value;}});
+ document.getElementById('mStart').onclick=()=>{const d=document.getElementById('mTo').value;if(d.startsWith('ab1room')){const n=(d.match(/(\d+)$/)||[])[1]||'418';const f=+n<100?0:Math.min(4,Math.max(0,Math.floor(+n/100)));sheet.classList.remove('open');setTimeout(()=>openIndoorExplorer(f,n),120);}else{sheet.classList.remove('open');const to=document.getElementById('to');if(to){to.value=d;if(typeof route==='function')route();}if(typeof toastMsg==='function')toastMsg('Route started');}};
+ document.getElementById('mAccess').onclick=()=>{const b=document.getElementById('mAccess');const on=b.dataset.on==='1';b.dataset.on=on?'0':'1';b.textContent='♿ Accessible: '+(on?'OFF':'ON');if(typeof accessible!=='undefined')window.accessible=!on;};
+})();
+</script>
+
+</body></html>
