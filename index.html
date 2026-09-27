@@ -165,12 +165,12 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
   body.mobile3DMode .app{display:block!important;position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;z-index:800!important}
   body.mobile3DMode header,body.mobile3DMode aside{display:none!important}
   body.mobile3DMode main{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;display:block!important;overflow:hidden!important;background:radial-gradient(circle at 60% 18%,#14234b 0,#081025 45%,#040711 100%)!important}
-  body.mobile3DMode .scene{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:grid!important;place-items:center!important;perspective:1100px!important;overflow:hidden!important;cursor:grab!important;touch-action:none!important}
-  body.mobile3DMode .world{width:980px!important;height:650px!important;transform-origin:center center!important;transition:none!important}
+  body.mobile3DMode .scene{position:absolute!important;inset:58px 0 0 0!important;width:100%!important;height:calc(100dvh - 58px)!important;display:grid!important;place-items:center!important;perspective:1100px!important;overflow:hidden!important;cursor:grab!important;touch-action:none!important}
+  body.mobile3DMode .world{width:900px!important;height:600px!important;transform-origin:center center!important;transition:none!important}
   body.mobile3DMode .hud,body.mobile3DMode .stats,body.mobile3DMode .compass{display:none!important}
   body.mobile3DMode .panel{left:10px!important;right:10px!important;bottom:84px!important;width:auto!important;max-height:38dvh!important;overflow:auto!important;border-radius:18px!important;background:#091225f2!important;z-index:910!important}
   body.mobile3DMode .toast{bottom:88px!important;z-index:950!important}
-  body.mobile3DMode .viewBtns{top:68px!important;right:10px!important;left:auto!important;display:flex!important;flex-direction:row!important;justify-content:flex-end!important;align-items:center!important;z-index:930!important;gap:6px!important;width:auto!important}
+  body.mobile3DMode .viewBtns{position:fixed!important;top:68px!important;right:10px!important;left:auto!important;display:flex!important;flex-direction:row!important;justify-content:flex-end!important;align-items:center!important;z-index:930!important;gap:6px!important;width:max-content!important;max-width:calc(100vw - 20px)!important}
   body.mobile3DMode .viewBtns button{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:38px!important;height:38px!important;padding:7px 11px!important;background:#081326ed!important;border-color:#304667!important;color:#eaf5ff!important;border-radius:11px!important;font-size:10px!important;box-shadow:0 8px 25px #0007!important}
   body.mobile3DMode .world{width:900px!important;height:600px!important;transform-origin:center center!important}
   body.mobile3DMode .scene{place-items:center!important}
@@ -187,13 +187,14 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
 }
 </style>
 
+<style id="campus-orbit-v13-mobile">@media(max-width:700px){body.mobile3DMode .world{touch-action:none;user-select:none;-webkit-user-select:none;will-change:transform}body.mobile3DMode .scene{touch-action:none!important}body.mobile3DMode .viewBtns button{width:auto!important;min-width:62px!important;display:block!important}body.mobile3DMode .viewBtns{display:flex!important;flex-direction:row!important;width:max-content!important}}</style>
 </head>
 <body>
 <div id="mobile3DBar" aria-label="Mobile 3D campus controls">
   <div class="m3dTitle"><div class="m3dLogo">◎</div><div><strong>Campus Orbit · 3D</strong><small>Drag to rotate • pinch to zoom</small></div></div>
   <div class="m3dBtns"><button class="m3dBtn" id="mobile3DBack">‹ Back</button><button class="m3dBtn" id="mobile3DOriginal">Map</button><button class="m3dBtn" id="mobile3DAB1">AB1</button></div>
 </div>
-<div id="mobile3DHint">👆 Drag to rotate&nbsp;&nbsp; • &nbsp;&nbsp;🤏 Pinch to zoom</div>
+<div id="mobile3DHint">👆 Drag to rotate&nbsp;&nbsp; • &nbsp;&nbsp;🤏 2 fingers to pan + zoom</div>
 
 <div class="app">
 <header><div class="brand"><div class="logo">◎</div><div><h1>Campus Orbit</h1><p>Interactive 3D campus wayfinding • offline prototype</p></div></div><div class="headerRight"><div class="mode">PROTOTYPE • V5</div><div class="badge">● OFFLINE READY</div></div></header>
@@ -305,7 +306,7 @@ const world=document.getElementById('world'),scene=document.getElementById('scen
 function toastMsg(s){toast.textContent=s;toast.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>toast.style.display='none',2200)}
 function showPanel(t,html){document.getElementById('panelTitle').textContent=t;document.getElementById('panelText').innerHTML=html;panel.style.display='block'}
 document.getElementById('close').onclick=()=>panel.style.display='none';
-function view(){world.style.transform=`rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
+function view(){const mx=window.__mobilePanX||0,my=window.__mobilePanY||0,mm=!!window.__mobile3DActive;world.style.transform=mm?`translate3d(${mx}px,${my}px,0) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`:`rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
 function buildFloors(){floors.innerHTML='';for(let f=0;f<5;f++){let el=document.createElement('div');el.className='floor f'+f;let md=[["S1","marker",7,7],["S2","marker",85,7],["S3","marker",7,84],["S4","marker",85,84],["L1","marker lift",43,7],["L2","marker lift",43,84]];md.forEach(([txt,cl,l,t])=>{let m=document.createElement('div');m.className=cl;m.textContent=txt;m.style.left=l+'%';m.style.top=t+'%';m.title=cl.includes('lift')?'Lift':'Staircase';el.appendChild(m)});if(f===4){let m=document.createElement('div');m.className='marker room418';m.textContent='418';m.style.left='67%';m.style.top='47%';el.appendChild(m)}floorRooms[f].forEach(r=>{let s=document.createElement('span');s.textContent=r;s.title=rooms[r];s.onclick=e=>{e.stopPropagation();showPanel('Room '+r,`<b>${rooms[r]}</b><br>AB1 • ${['Ground','1st','2nd','3rd','4th'][f]} Floor<br><br><button class="btn primary" onclick="roomRoute('${r}',${f})">Show route</button>`)};el.appendChild(s)});floors.appendChild(el)}}buildFloors();
 function showAB1(f=null){document.getElementById('ab1').style.opacity='.92';floors.style.display='none';document.getElementById('info').innerHTML='<b>AB1 — Academic Block 1</b><br>5 floors • 4 staircases per floor • 2 lifts.<br><br>Choose a floor to open the large floor interface. Nothing opens automatically.'}
 function campus(){document.getElementById('ab1').style.opacity='1';floors.style.display='none';document.getElementById('info').innerHTML='<b>Campus overview</b><br>Layout follows the supplied campus map. No extra trees or invented campus blocks were added.<br><br><b>MFC</b> Mini Net Football Court • <b>BG</b> Basketball Ground • <b>BC</b> Badminton Court • <b>VBC</b> Volleyball Court • <b>M&R</b> Management & Research.'}
@@ -330,8 +331,14 @@ document.querySelectorAll('.bld').forEach(b=>b.onclick=()=>{let n=b.dataset.name
 // Search
 const search=document.getElementById('search');search.addEventListener('keydown',e=>{if(e.key!=='Enter')return;let q=search.value.trim().toLowerCase();if(!q)return;let hit=Object.keys(rooms).find(k=>k.toLowerCase()===q)||Object.keys(rooms).find(k=>(rooms[k]||'').toLowerCase().includes(q));if(hit){let f=Math.floor((parseInt(hit)||100)/100);f=Math.max(0,Math.min(4,f));openFloor(f,hit);return}let b=[...document.querySelectorAll('.bld')].find(x=>x.dataset.name.toLowerCase().includes(q));if(b){b.scrollIntoView?.();showPanel('Location found',b.dataset.name);return}toastMsg('No matching location in current prototype')});
 // 3D controls
-const scenePointers=new Map();let pinchStart=0,pinchZoom=.78;function pointerDistance(){const a=[...scenePointers.values()];if(a.length<2)return 0;return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}scene.addEventListener('pointerdown',e=>{if(e.target.closest('button,.bld,.floor,.panel,.search'))return;e.preventDefault();scenePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});scene.setPointerCapture?.(e.pointerId);if(scenePointers.size===1){drag=true;px=e.clientX;py=e.clientY;scene.classList.add('dragging');world.classList.add('noTransition')}else if(scenePointers.size===2){drag=false;pinchStart=pointerDistance();pinchZoom=zoom;scene.classList.remove('dragging')}});scene.addEventListener('pointermove',e=>{if(!scenePointers.has(e.pointerId))return;e.preventDefault();scenePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(scenePointers.size>=2){const d=pointerDistance();if(pinchStart&&d){zoom=Math.max(.48,Math.min(1.18,pinchZoom*(d/pinchStart)));view()}return}if(!drag)return;rz+=(e.clientX-px)*.34;rx-=(e.clientY-py)*.26;rx=Math.max(8,Math.min(78,rx));px=e.clientX;py=e.clientY;view()});function endScenePointer(e){scenePointers.delete(e.pointerId);if(scenePointers.size<2)pinchStart=0;if(scenePointers.size===0){drag=false;scene.classList.remove('dragging');world.classList.remove('noTransition')}}scene.addEventListener('pointerup',endScenePointer);scene.addEventListener('pointercancel',endScenePointer);scene.addEventListener('wheel',e=>{e.preventDefault();zoom+=e.deltaY<0?.045:-.045;zoom=Math.max(.48,Math.min(1.18,zoom));view()},{passive:false});
-document.getElementById('resetView').onclick=()=>{rx=56;rz=0;zoom=window.matchMedia('(max-width:700px)').matches?.50:.78;view()};document.getElementById('topView').onclick=()=>{rx=8;rz=0;zoom=window.matchMedia('(max-width:700px)').matches?.55:.82;view()};document.getElementById('tiltView').onclick=()=>{rx=54;rz=0;zoom=window.matchMedia('(max-width:700px)').matches?.50:.78;view()};
+const scenePointers=new Map();let pinchStart=0,pinchZoom=.78,pinchMidStart=null,pinchPanX=0,pinchPanY=0;
+function pointerDistance(){const a=[...scenePointers.values()];if(a.length<2)return 0;return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
+function pointerMid(){const a=[...scenePointers.values()];if(a.length<2)return null;return{x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}}
+scene.addEventListener('pointerdown',e=>{if(e.target.closest('button,.bld,.floor,.panel,.search'))return;e.preventDefault();scenePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});scene.setPointerCapture?.(e.pointerId);if(scenePointers.size===1){drag=true;px=e.clientX;py=e.clientY;scene.classList.add('dragging');world.classList.add('noTransition')}else if(scenePointers.size===2){drag=false;pinchStart=pointerDistance();pinchZoom=zoom;pinchMidStart=pointerMid();pinchPanX=window.__mobilePanX||0;pinchPanY=window.__mobilePanY||0;scene.classList.remove('dragging')}});
+scene.addEventListener('pointermove',e=>{if(!scenePointers.has(e.pointerId))return;e.preventDefault();scenePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(scenePointers.size>=2){const d=pointerDistance(),m=pointerMid();if(pinchStart&&d)zoom=Math.max(.34,Math.min(1.18,pinchZoom*(d/pinchStart)));if(window.__mobile3DActive&&pinchMidStart&&m){window.__mobilePanX=pinchPanX+(m.x-pinchMidStart.x);window.__mobilePanY=pinchPanY+(m.y-pinchMidStart.y)}view();return}if(!drag)return;rz+=(e.clientX-px)*.34;rx-=(e.clientY-py)*.26;rx=Math.max(8,Math.min(78,rx));px=e.clientX;py=e.clientY;view()});
+function endScenePointer(e){scenePointers.delete(e.pointerId);if(scenePointers.size<2){pinchStart=0;pinchMidStart=null}if(scenePointers.size===0){drag=false;scene.classList.remove('dragging');world.classList.remove('noTransition')}}
+scene.addEventListener('pointerup',endScenePointer);scene.addEventListener('pointercancel',endScenePointer);scene.addEventListener('wheel',e=>{e.preventDefault();zoom+=e.deltaY<0?.045:-.045;zoom=Math.max(.34,Math.min(1.18,zoom));view()},{passive:false});
+document.getElementById('resetView').onclick=()=>{rx=56;rz=0;window.__mobilePanX=0;window.__mobilePanY=0;zoom=window.matchMedia('(max-width:700px)').matches?.42:.78;view()};document.getElementById('topView').onclick=()=>{rx=8;rz=0;window.__mobilePanX=0;window.__mobilePanY=0;zoom=window.matchMedia('(max-width:700px)').matches?.46:.82;view()};document.getElementById('tiltView').onclick=()=>{rx=50;rz=0;window.__mobilePanX=0;window.__mobilePanY=0;zoom=window.matchMedia('(max-width:700px)').matches?.42:.78;view()};
 // Demo
 let demoStep=0;document.getElementById('demoBtn').onclick=()=>{demoStep=(demoStep+1)%3;if(demoStep===1){document.getElementById('from').value='gate1';to.value='ab1room418';showAB1(4);route()}else if(demoStep===2){document.getElementById('from').value='ab2';to.value='mr';campus();route()}else{campus();toastMsg('Demo reset — explore the campus') }};
 // Presentation mode
@@ -674,15 +681,15 @@ function showMobileRouteResult(steps,points){
   const back=document.getElementById('mobile3DBack'), original=document.getElementById('mobile3DOriginal'), ab1=document.getElementById('mobile3DAB1');
   const mapOverlay=document.getElementById('mobileMapOverlay');
   function mobile3D(){
-    body.classList.add('mobile3DMode');
+    body.classList.add('mobile3DMode');window.__mobile3DActive=true;window.__mobilePanX=0;window.__mobilePanY=0;
     if(shell)shell.style.display='none';
     if(typeof campus==='function')campus();
     if(typeof clearSvgRoute==='function')clearSvgRoute();
-    if(typeof view==='function'){rx=54;rz=0;zoom=.50;view()}
-    if(typeof toastMsg==='function')toastMsg('Interactive 3D campus — touch enabled');
+    if(typeof view==='function'){rx=50;rz=0;zoom=.42;view()}
+    if(typeof toastMsg==='function')toastMsg('Drag to rotate • 2 fingers to pan and zoom');
   }
   function leave3D(){
-    body.classList.remove('mobile3DMode');
+    body.classList.remove('mobile3DMode');window.__mobile3DActive=false;window.__mobilePanX=0;window.__mobilePanY=0;
     if(shell)shell.style.display='flex';
     if(typeof view==='function'){rx=54;rz=0;zoom=.78;view()}
   }
