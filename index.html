@@ -1,3 +1,6 @@
+
+
+Campusorbit fixed · HTML
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,16 +18,16 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
 .floors{position:absolute;left:54%;top:50%;width:235px;height:142px;transform-style:preserve-3d;display:none;z-index:40}.floor{position:absolute;width:235px;height:142px;background:#17233b;border:1px solid #4de8ff88;box-shadow:10px 12px 0 #0008,0 0 30px #4de8ff18;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:2px;padding:6px;cursor:pointer}.floor span{background:#293753;border:1px solid #465777;color:#eaf0ff;border-radius:3px;font-size:7px;display:grid;place-items:center;text-align:center;padding:2px;overflow:hidden}.floor span:hover{background:#4de8ff33;border-color:#4de8ff}.f0{transform:translate(-50%,-50%) translateZ(0)}.f1{transform:translate(-50%,-50%) translateZ(42px) translateY(-14px)}.f2{transform:translate(-50%,-50%) translateZ(84px) translateY(-28px)}.f3{transform:translate(-50%,-50%) translateZ(126px) translateY(-42px)}.f4{transform:translate(-50%,-50%) translateZ(168px) translateY(-56px)}.marker{position:absolute;width:14px;height:14px;border-radius:50%;display:grid;place-items:center;font-size:7px;font-weight:900;color:#07101b;background:var(--yellow);box-shadow:0 0 13px #ffd166;border:2px solid #fff}.lift{background:var(--violet);box-shadow:0 0 13px #9b7cff}.room418{background:#fff;box-shadow:0 0 20px #fff;color:#111}
 .panel{position:absolute;z-index:50;right:16px;bottom:16px;width:330px;padding:15px;border-radius:15px;display:none}.panel h3{margin:0 0 5px;font-size:15px}.panel p{margin:0;color:#aab6cc;font-size:11px;line-height:1.55}.close{float:right;background:none;border:0;color:#8d9ab5;font-size:20px;cursor:pointer}.toast{position:absolute;z-index:60;left:50%;bottom:18px;transform:translateX(-50%);padding:10px 15px;border-radius:999px;background:#0a1020ee;border:1px solid #3b4b6d;color:#e9efff;font-size:11px;display:none;box-shadow:0 10px 35px #0007}.stats{position:absolute;left:14px;bottom:14px;z-index:25;display:flex;gap:7px}.stat{padding:8px 10px;border-radius:10px;font-size:9px;color:#b9c4da}.stat b{color:#fff;font-size:11px;margin-right:3px}.presentation{position:absolute;z-index:70;inset:0;background:#050812f7;display:none;align-items:center;justify-content:center;padding:5vw}.presentation .pbox{max-width:900px;text-align:center}.presentation h2{font-size:46px;margin:0;background:linear-gradient(90deg,var(--cyan),#fff,var(--pink));-webkit-background-clip:text;color:transparent}.presentation p{color:#aebbd2}.presentation .bigRoute{font-size:22px;margin:30px 0;color:#fff}.presentation .closeP{margin-top:15px}
 @media(max-width:950px){.app{grid-template-columns:1fr;grid-template-rows:72px auto 1fr}aside{max-height:330px;border-right:0;border-bottom:1px solid #273454}.scene{height:calc(100vh - 402px);min-height:500px}.world{transform:rotateX(55deg) rotateZ(-12deg) scale(.58)}.stats{display:none}.search{width:210px}.quick{display:none}}
-
+ 
 /* V4 enhancements */
 .v4dock{position:absolute;right:14px;bottom:18px;z-index:60;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:520px}.v4dock button{border:1px solid #344767;background:#091224e8;color:#eaf4ff;padding:10px 13px;border-radius:12px;font-size:11px;cursor:pointer;box-shadow:0 10px 30px #0006}.v4dock button:hover{border-color:#4de8ff;transform:translateY(-1px)}
 .videoModal,.refModal{position:absolute;inset:0;z-index:200;display:none;place-items:center;background:#02050bdd;backdrop-filter:blur(14px);padding:28px}.modalCard{width:min(1000px,94vw);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#101a30,#070c18);border:1px solid #344767;border-radius:24px;box-shadow:0 30px 100px #000b;padding:18px}.modalTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modalTop h2{margin:0;font-size:18px}.x{border:1px solid #354564;background:#111b2d;color:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer}.demoVideo{width:100%;border-radius:16px;border:1px solid #2e4162;background:#000;display:block}.modalNote{font-size:11px;color:#8f9db7;margin:10px 2px 0;line-height:1.5}.refImg{width:100%;border-radius:14px;border:1px solid #334766;background:#fff}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.step{padding:10px;border:1px solid #2d3e5d;border-radius:12px;background:#0b1425}.step b{display:block;font-size:11px;color:#fff;margin-bottom:4px}.step span{font-size:10px;color:#8e9bb6}.compass{position:absolute;left:14px;bottom:18px;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#081021d9;border:1px solid #344767;box-shadow:0 12px 35px #0008;color:#dfeaff;font-size:10px}.compass:before{content:'N';position:absolute;top:5px;color:#4de8ff;font-weight:900}.compass:after{content:'✦';font-size:19px;color:#fff}.pulseDot{position:absolute;width:12px;height:12px;border-radius:50%;background:#4de8ff;box-shadow:0 0 0 0 #4de8ff88;animation:pulseV4 1.8s infinite;z-index:25}@keyframes pulseV4{0%{box-shadow:0 0 0 0 #4de8ff88}70%{box-shadow:0 0 0 18px #4de8ff00}100%{box-shadow:0 0 0 0 #4de8ff00}}
 @media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:64px auto 1fr}aside{display:none}.steps{grid-template-columns:1fr 1fr}.v4dock{bottom:10px}.compass{bottom:10px}}
-
+ 
 /* V5 */
 .floorModal{position:fixed;inset:0;z-index:500;display:none;background:radial-gradient(circle at 50% 20%,#17284b,#070b15 62%);color:#f6f8ff}.floorModal.open{display:flex;flex-direction:column;animation:fi .22s ease}@keyframes fi{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
 .fmTop{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #293957;background:#070b15f5;flex-shrink:0}.fmBrand{display:flex;align-items:center;gap:12px}.fmBack,.fmActions button{border:1px solid #30415f;background:#101a2d;color:#dce8ff;border-radius:10px;padding:9px 12px;cursor:pointer}.fmBack:hover,.fmActions button:hover{border-color:#4de8ff}.fmTitle{font-size:18px;font-weight:900}.fmSub{font-size:10px;color:#8493b2;margin-top:3px}.fmActions{display:flex;gap:7px;align-items:center}.fmBadge{font-size:9px;border:1px solid #2b4b62;background:#0c2030;color:#91e9ff;border-radius:999px;padding:6px 9px}.fmBody{display:grid;grid-template-columns:180px minmax(0,1fr) 280px;flex:1;min-height:0}.fmFloors{padding:18px 14px;border-right:1px solid #263654;background:#090f1d;overflow:auto}.fmFloors h4{margin:0 0 12px;font-size:10px;letter-spacing:.14em;color:#8090b1;text-transform:uppercase}.floorBtn{width:100%;text-align:left;padding:13px 12px;margin-bottom:8px;border-radius:11px;border:1px solid #293957;background:#0e1728;color:#cdd8ed;cursor:pointer}.floorBtn:hover{border-color:#4de8ff}.floorBtn.active{background:linear-gradient(135deg,#16384a,#24204b);border-color:#4de8ff;color:#fff;box-shadow:0 0 22px #4de8ff14}.floorBtn b{display:block;font-size:12px}.floorBtn span{display:block;font-size:9px;color:#7483a0;margin-top:3px}.fmCanvas{position:relative;overflow:auto;display:grid;place-items:center;padding:35px;background:radial-gradient(circle,#15213a,#0b1221 52%,#070b14)}.floorPlan{position:relative;width:min(860px,82vw);height:min(650px,74vh);min-width:680px;min-height:520px;background:#c8ced5;border:5px solid #7d8794;border-radius:8px;box-shadow:0 30px 90px #000b;overflow:hidden}.fpHeader{position:absolute;left:0;right:0;top:0;height:55px;background:#eef1f4;color:#172033;display:grid;place-items:center;font-weight:900;font-size:20px;border-bottom:3px solid #8994a2}.fpHeader small{display:block;font-size:9px;color:#657083;text-align:center}.fpCorridor{position:absolute;left:48%;top:55px;bottom:0;width:9%;background:#dfe3e7;border-left:2px solid #919aa6;border-right:2px solid #919aa6}.fpRoom{position:absolute;background:#3c3030;color:#f7f0e7;border:2px solid #d7dde3;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:10px;line-height:1.05;padding:3px;cursor:pointer;transition:.15s;overflow:hidden}.fpRoom:hover{transform:scale(1.02);z-index:5;border-color:#4de8ff}.fpRoom.selected{background:#0e5360;border-color:#4de8ff;box-shadow:0 0 0 3px #4de8ff55,0 0 30px #4de8ff66;z-index:10}.fpRoom span{font-size:8px;color:#ffd98b;margin-bottom:2px}.fpRoom small{font-size:7px;color:#d9e2ef}.fpStair{position:absolute;width:54px;height:72px;background:repeating-linear-gradient(0deg,#c88b2d 0 5px,#f1c86d 5px 9px);border:3px solid #6e4a16;color:#251b0b;display:grid;place-items:center;font-weight:900;font-size:9px;text-align:center;z-index:8;box-shadow:0 5px 12px #0005}.fpLift{position:absolute;width:58px;height:58px;background:#2f75b5;border:3px solid #a9d9ff;color:white;display:grid;place-items:center;font-weight:900;font-size:10px;border-radius:5px;z-index:8}.fpRoute{position:absolute;height:8px;background:linear-gradient(90deg,#00c6ff,#5cffaa);box-shadow:0 0 18px #00c6ff;z-index:20;border-radius:99px;display:none;transform-origin:left center}.fpRoute:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 13px,#fff 14px 18px);animation:flow2 .6s linear infinite;border-radius:99px}@keyframes flow2{to{background-position:18px 0}}.fpLegend{position:absolute;left:16px;bottom:12px;background:#ffffffea;color:#293244;border:1px solid #a9b2bd;border-radius:7px;padding:7px 9px;font-size:8px;display:flex;gap:10px;z-index:30}.fpLegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-2px}.fmInfo{padding:18px;border-left:1px solid #263654;background:#090f1d;overflow:auto}.fmCard{background:#0d1627;border:1px solid #293957;border-radius:13px;padding:13px;margin-bottom:10px}.fmCard h3{margin:0 0 7px;font-size:13px}.fmCard p{margin:0;color:#9eacc6;font-size:10px;line-height:1.55}.fmSearch{width:100%;border:1px solid #30415f;background:#0b1322;color:#fff;border-radius:10px;padding:10px;outline:0}.fmSearch:focus{border-color:#4de8ff}.roomResult{margin-top:8px;padding:9px;border-radius:9px;background:#111d31;border:1px solid #2b3c5b;font-size:10px;cursor:pointer}.roomResult:hover{border-color:#4de8ff}.routeChoice{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.routeChoice button{padding:8px;border-radius:8px;border:1px solid #30415f;background:#111b2e;color:#cfe0f5;cursor:pointer}.floorNote{font-size:9px;color:#7786a1;line-height:1.5;margin-top:8px}.tip2{font-size:9px;color:#7786a1}@media(max-width:1000px){.fmBody{grid-template-columns:135px minmax(0,1fr)}.fmInfo{display:none}.floorPlan{min-width:650px}}@media(max-width:700px){.fmBody{grid-template-columns:100px minmax(0,1fr)}.floorPlan{min-width:600px}.fmActions .fmBadge{display:none}}
-
+ 
 /* ===== V6 ADDITIONS: preserve V5, add depth instead of replacing it ===== */
 .ab1Mode{position:fixed;inset:0;z-index:500;display:none;background:radial-gradient(circle at 50% 35%,#18284f 0,#080d1a 58%,#050812 100%);}
 .ab1Mode.open{display:block}.ab1Top{height:74px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #29395a;background:#070c17e8;backdrop-filter:blur(16px)}
@@ -34,7 +37,7 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
 .routeSvg{position:absolute;inset:0;width:100%;height:100%;z-index:21;pointer-events:none;overflow:visible}.routePath{fill:none;stroke:#4de8ff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:12 9;filter:drop-shadow(0 0 7px #4de8ff);animation:routeDash .65s linear infinite}.routePath.accessible{stroke:#5cffaa;filter:drop-shadow(0 0 7px #5cffaa)}@keyframes routeDash{to{stroke-dashoffset:-21}}.routeDot{fill:#fff;stroke:#4de8ff;stroke-width:5}.routeDot.accessible{stroke:#5cffaa}.routeArrow{fill:#fff}.routeCaption{font-size:10px;fill:#fff;font-weight:800;paint-order:stroke;stroke:#050a12;stroke-width:4px}
 .v6Toolbar{position:absolute;left:14px;bottom:14px;z-index:35;display:flex;gap:7px;flex-wrap:wrap}.v6Toolbar button{border:1px solid #2b3b5a;background:#09111fdd;color:#dbe5f7;border-radius:9px;padding:8px 10px;font-size:9px;cursor:pointer}.v6Toolbar button:hover{border-color:#4de8ff}.accuracyBadge{position:absolute;right:14px;bottom:14px;z-index:35;border:1px solid #3a4661;background:#070d18e8;color:#aeb9ce;border-radius:999px;padding:7px 10px;font-size:9px}.routeInfoBox{margin-top:9px;padding:10px;border:1px solid #263653;background:#0a1220;border-radius:10px;font-size:10px;line-height:1.55;color:#aab6cb}.routeInfoBox b{color:#fff}.routeStepsMini{display:grid;gap:6px;margin-top:8px}.routeStepMini{display:flex;gap:7px;align-items:flex-start}.routeStepMini i{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:#14233a;color:#4de8ff;font-style:normal;font-size:8px;flex:none}.routeStepMini span{font-size:9px;color:#9ba8c0}.featureGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.featureCard{padding:9px;border:1px solid #253451;background:#0c1424;border-radius:10px}.featureCard b{font-size:9px}.featureCard span{display:block;font-size:8px;color:#8492ab;margin-top:3px;line-height:1.4}
 @media(max-width:900px){.ab1Stage{grid-template-columns:1fr}.ab1Legend{display:none}.ab1World{transform:rotateX(58deg) rotateZ(-18deg) scale(.65)}}
-
+ 
 /* AB1 INDOOR EXPLORER — enhanced, video-inspired, offline */
 .ab1Explore{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 20%,#17264a 0,#070b16 55%,#03050b 100%);display:none;color:#eef4ff}
 .ab1Explore.open{display:flex;flex-direction:column}
@@ -81,9 +84,9 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
 .ieLegend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px;font-size:8px;color:#788ba8}.ieLegend span{display:flex;align-items:center;gap:5px}.ieLegend i{width:9px;height:9px;border-radius:3px;display:inline-block}
 .ieDisclaimer{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:30;background:#070e1bd9;border:1px solid #293c5c;border-radius:999px;padding:6px 11px;color:#7488a8;font-size:8px;pointer-events:none}
 @media(max-width:900px){.ieBody{grid-template-columns:190px minmax(0,1fr)}.ieSide.right{display:none}.ieWorld{transform:scale(.8)}}@media(max-width:650px){.ieBody{grid-template-columns:1fr}.ieSide.left{display:none}.ieCenter{min-height:calc(100vh - 72px)}.ieWorld{transform:scale(.65)}}
-
-
-
+ 
+ 
+ 
 /* V10 MOBILE-FIRST REBUILD */
 #mobileShell{display:none}
 @media(max-width:700px){
@@ -106,11 +109,11 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
   #mobileMainNav{display:none!important}
 }
 @media(min-width:701px){#mobileShell{display:none!important}}
-
+ 
 </style>
-
-<style id="campus-orbit-route-popup-base">#mobileRouteResult{display:none!important}</style>
-
+ 
+<style id="campus-orbit-route-popup-base">#mobileRouteResult{display:none}</style>
+ 
 <style id="campus-orbit-v9-mobile">
 /* CAMPUS ORBIT V9 — MOBILE-FIRST LAYER */
 #mobileRouteSheet,#mobileMainNav{display:none}
@@ -143,7 +146,7 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
   .ab1World{transform-origin:center!important}.ab1RoomPin{transform:translate(-50%,-50%) scale(.9)!important}
   .ab1Mode .ab1Actions #launchIndoor{display:block!important}.ab1Mode .ab1Actions #ab1Close3D{display:block!important}
   .floorModal .fmTop{padding:10px!important}.floorModal .fmBody{display:block!important}.fmCanvas{height:60dvh!important}.fmInfo{display:none!important}
-  .ab1Explore{position:fixed!important;inset:0!important;border-radius:0!important}.ab1Explore.open{display:block!important}.ieTop{padding:10px!important}.ieTop h2{font-size:15px!important}.ieTop p{display:none!important}.ieTopBtns button{min-height:38px!important;padding:7px!important;font-size:9px!important}.ieTopBtns #ieAuto,.ieTopBtns #ieReset{display:none}
+  .ab1Explore{position:fixed!important;inset:0!important;border-radius:0!important}.ab1Explore.open{display:flex!important}.ieTop{padding:10px!important}.ieTop h2{font-size:15px!important}.ieTop p{display:none!important}.ieTopBtns button{min-height:38px!important;padding:7px!important;font-size:9px!important}.ieTopBtns #ieAuto,.ieTopBtns #ieReset{display:none}
   .ieBody{display:block!important}.ieLeft{display:none!important}.ieCenter{height:calc(100dvh - 60px)!important;width:100%!important}.ieCenterBar{bottom:76px!important;left:8px!important;right:8px!important}.ieControls button{min-width:44px!important;min-height:40px!important}.ieViewer{height:100%!important}.ieRight{position:absolute!important;left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;max-height:42dvh!important;overflow:auto!important;border-radius:18px!important;background:rgba(8,15,29,.94)!important;padding:10px!important;z-index:20}.ieFloorTabs{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:4px!important;padding:7px!important}.ieFloorTab{min-height:38px!important;padding:5px!important;font-size:8px!important}.ieSearch{height:42px!important}.ieActions button{min-height:42px!important}.ieResults{max-height:110px!important;overflow:auto}
   .ieFloor{transform-origin:center!important}.ieRoom{font-size:9px!important}.ieRoom small{font-size:6px!important}.ieConnector{font-size:8px!important}
   .accuracyBadge{bottom:72px!important;right:8px!important;font-size:7px!important;opacity:.7}
@@ -156,11 +159,10 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
 }
 @media (min-width:701px){#mobileMainNav,#mobileRouteSheet{display:none!important}}
 </style>
-
-
+ 
+ 
 <style id="campus-orbit-mobile-3d-fix">
 @media(max-width:700px){
-  body.mobile3DMode{background:#050914!important;color:#f5f7ff!important}
   body.mobile3DMode #mobileShell{display:none!important}
   body.mobile3DMode .app{display:block!important;position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;z-index:800!important}
   body.mobile3DMode header,body.mobile3DMode aside{display:none!important}
@@ -186,7 +188,7 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
   body.mobile3DMode #routeLine,body.mobile3DMode #node1,body.mobile3DMode #node2{z-index:900}
 }
 </style>
-
+ 
 <style id="campus-orbit-v13-mobile">@media(max-width:700px){body.mobile3DMode .world{touch-action:none;user-select:none;-webkit-user-select:none;will-change:transform}body.mobile3DMode .scene{touch-action:none!important}body.mobile3DMode .viewBtns button{width:auto!important;min-width:62px!important;display:block!important}body.mobile3DMode .viewBtns{display:flex!important;flex-direction:row!important;width:max-content!important}}</style>
 </head>
 <body>
@@ -195,7 +197,7 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
   <div class="m3dBtns"><button class="m3dBtn" id="mobile3DBack">‹ Back</button><button class="m3dBtn" id="mobile3DOriginal">Map</button><button class="m3dBtn" id="mobile3DAB1">AB1</button></div>
 </div>
 <div id="mobile3DHint">👆 Drag to rotate&nbsp;&nbsp; • &nbsp;&nbsp;🤏 2 fingers to pan + zoom</div>
-
+ 
 <div class="app">
 <header><div class="brand"><div class="logo">◎</div><div><h1>Campus Orbit</h1><p>Interactive 3D campus wayfinding • offline prototype</p></div></div><div class="headerRight"><div class="mode">PROTOTYPE • V5</div><div class="badge">● OFFLINE READY</div></div></header>
 <aside>
@@ -274,9 +276,9 @@ main{position:relative;min-width:0;overflow:hidden}.hud{position:absolute;z-inde
     </aside>
   </div>
 </div>
-
+ 
   <div class="presentation" id="presentation"><div class="pbox"><h2>Campus Orbit</h2><p>Interactive 3D Campus Navigation Prototype</p><div class="bigRoute">Gate 1 → AB1 → 4th Floor → Room 418</div><p>Drag to rotate • Scroll to zoom • Select buildings • Explore floors • Preview routes</p><button class="btn primary closeP" id="closeP">Return to prototype</button></div></div>
-
+ 
   <div class="compass" title="Orientation">N</div>
   <div class="v4dock">
     <button id="videoBtn">▶ Demo Video</button>
@@ -344,7 +346,7 @@ let demoStep=0;document.getElementById('demoBtn').onclick=()=>{demoStep=(demoSte
 // Presentation mode
 document.getElementById('presBtn').onclick=()=>document.getElementById('presentation').style.display='flex';document.getElementById('closeP').onclick=()=>document.getElementById('presentation').style.display='none';document.getElementById('helpBtn').onclick=()=>showPanel('How to use','<b>Drag</b> the campus to rotate it.<br><b>Scroll</b> to zoom.<br><b>Click</b> AB1 to inspect the building.<br><b>Choose a floor</b> to open the large floor-plan mode.<br><b>Show Route</b> previews a navigation path.<br><b>♿ Accessible</b> switches the route mode.');
 view();
-
+ 
 // V5 dedicated floor interface
 const floorModal=document.getElementById('floorModal'),fpRooms=document.getElementById('fpRooms'),fmFloorName=document.getElementById('fmFloorName'),fpHeaderFloor=document.getElementById('fpHeaderFloor'),fmSelected=document.getElementById('fmSelected'),fmSearch=document.getElementById('fmSearch'),fmResults=document.getElementById('fmResults'),fmRoute=document.getElementById('fmRoute'),fmAccess=document.getElementById('fmAccess');let currentFloor=4,selectedRoom=null,fmAccessible=false;const floorNames=['Ground Floor','1st Floor','2nd Floor','3rd Floor','4th Floor'],floorShort=['GROUND','1ST','2ND','3RD','4TH'];
 function openFloor(f=4,room=null){currentFloor=f;selectedRoom=room||null;floorModal.classList.add('open');floorModal.setAttribute('aria-hidden','false');fmSearch.value='';renderFloor(f,room)}window.openFloor=openFloor;
@@ -366,7 +368,7 @@ document.getElementById('routeStepsBtn').onclick=()=>stepsModal.style.display='g
 document.getElementById('focusBtn').onclick=()=>{showAB1();rx=56;rz=-12;zoom=.9;view();toastMsg('AB1 focused — drag to rotate')};
 [videoModal,refModal,stepsModal].forEach(m=>m.addEventListener('click',e=>{if(e.target===m){m.style.display='none';if(m===videoModal)demoVideo.pause()}}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){[videoModal,refModal,stepsModal].forEach(m=>m.style.display='none');demoVideo.pause()} if(e.key.toLowerCase()==='v')document.getElementById('videoBtn').click(); if(e.key.toLowerCase()==='r')document.getElementById('resetView').click()});
-
+ 
 // ===== V6 behavior: augment V5 without removing its existing features =====
 const v6Paths={
  gate1_ab1main:[[490,615],[555,580],[610,540],[640,505]],
@@ -390,7 +392,7 @@ drawRoute=function(t){
  if(result?.points?.length>=2){setRouteSvg(result.points,`${routeNames[document.getElementById('from').value]||'START'} → ${routeNames[document.getElementById('to').value]||'DESTINATION'}`,accessible);document.getElementById('routeLine').style.display='none';document.getElementById('node1').style.display='none';document.getElementById('node2').style.display='none';return}
  oldDrawRoute(t);
 };
-
+ 
 // AB1 dedicated 3D model
 const ab1Mode=document.getElementById('ab1Mode'),ab1World=document.getElementById('ab1World'),ab1Viewer=document.getElementById('ab1Viewer');let aRx=58,aRz=-18,aZoom=.86,aDrag=false,aPX=0,aPY=0,exploded=false;
 function ab1View(){ab1World.style.transform=`rotateX(${aRx}deg) rotateZ(${aRz}deg) scale(${aZoom})`}
@@ -410,8 +412,8 @@ const oldClear=document.getElementById('clearBtn');oldClear.addEventListener('cl
 document.getElementById('campusBtn').addEventListener('click',closeAB1Model);
 // Keyboard shortcut: B opens AB1 3D, Esc closes overlays.
 document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Model();if(e.key==='Escape'){closeAB1Model();routeDetailsModal.style.display='none';factsModal.style.display='none'}});
-
-
+ 
+ 
 /* CAMPUS ORBIT V8 ENHANCEMENT — LIFT ACCESS + SMART GUIDANCE */
 (function(){
   const style=document.createElement('style');
@@ -427,9 +429,9 @@ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Mode
     .ieGuideStep.active{border-color:#4de8ff!important;box-shadow:0 0 18px #4de8ff22}
   `;
   document.head.appendChild(style);
-
+ 
   window.CampusOrbitUserType='student';
-
+ 
   // Add a compact user-type selector to the Indoor Explorer's right panel.
   const selected=document.getElementById('ieSelected');
   if(selected){
@@ -443,7 +445,7 @@ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Mode
     note.className='ieAccessNote';
     note.textContent='Student mode: teacher-only lift is excluded from routes. The other lift may be used.';
     selected.parentElement.appendChild(note);
-
+ 
     document.getElementById('ieStudentBtn').onclick=()=>{
       window.CampusOrbitUserType='student';
       document.getElementById('ieStudentBtn').classList.add('active');
@@ -461,7 +463,7 @@ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Mode
       toastMsg('Teacher navigation enabled');
     };
   }
-
+ 
   // Wrap the existing room selection to enforce lift access in the displayed route.
   const waitForFn=setInterval(()=>{
     if(typeof window.ieSelectRoom!=='function') return;
@@ -485,7 +487,7 @@ document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='b')openAB1Mode
     };
   },50);
 })();
-
+ 
 /* AB1 INDOOR EXPLORER JS */
 const ie=document.getElementById('ab1Explore'),ieWorld=document.getElementById('ieWorld'),ieViewer=document.getElementById('ieViewer');
 const ieSelected=document.getElementById('ieSelected'),ieResults=document.getElementById('ieResults'),ieSearch=document.getElementById('ieSearch'),ieStatus=document.getElementById('ieStatus'),ieRouteSteps=document.getElementById('ieRouteSteps');
@@ -525,7 +527,16 @@ function ieDrawRoute(){document.querySelectorAll('.ieRouteLine').forEach(x=>x.re
 function openIndoorExplorer(f=4,r='418'){ie.classList.add('open');ie.setAttribute('aria-hidden','false');ieFloor=f;ieRoom=r;ieRX=62;ieRZ=-14;ieZoom=.82;ieAccessible=false;buildIndoor();ieSelectRoom(r,f)}
 window.openIndoorExplorer=openIndoorExplorer;
 document.getElementById('launchIndoor').onclick=()=>{closeAB1Model();openIndoorExplorer(4,'418')};
-document.getElementById('ieClose').onclick=()=>{ie.classList.remove('open');ie.setAttribute('aria-hidden','true');clearInterval(ieAutoTimer)};
+document.getElementById('ieClose').onclick=()=>{
+  ie.classList.remove('open');ie.setAttribute('aria-hidden','true');clearInterval(ieAutoTimer);
+  if(window.__mobile3DActive){
+    document.body.classList.remove('mobile3DMode');window.__mobile3DActive=false;
+    const shellEl=document.getElementById('mobileShell');if(shellEl)shellEl.style.display='flex';
+    const bar3d=document.getElementById('mobile3DBar');if(bar3d)bar3d.style.display='';
+    const hint3d=document.getElementById('mobile3DHint');if(hint3d)hint3d.style.display='';
+    const vb=document.querySelector('.viewBtns');if(vb)vb.style.display='';
+  }
+};
 document.getElementById('ieReset').onclick=()=>{ieFloor=-1;ieRoom=null;ieRX=62;ieRZ=-14;ieZoom=.82;buildIndoor();ieSelected.innerHTML='<h4>Selected location</h4><p>Select a room, floor or connector to inspect it.</p>';ieRouteSteps.innerHTML='<div class="ieStep"><i>1</i><span>Select a room</span></div><div class="ieStep"><i>2</i><span>Choose route</span></div>'};
 document.querySelectorAll('.ieFloorTab').forEach(b=>b.onclick=()=>{ieFloor=+b.dataset.ieFloor;ieRoom=null;ieApplyFloor();document.querySelectorAll('.ieRouteLine').forEach(x=>x.remove())});
 document.getElementById('ieTop').onclick=()=>{ieRX=8;ieRZ=0;ieZoom=.86;ieSetTransform()};document.getElementById('ieTilt').onclick=()=>{ieRX=62;ieRZ=-14;ieZoom=.82;ieSetTransform()};document.getElementById('ieExplode').onclick=()=>{ieFloor=-1;ieRoom=null;ieApplyFloor();ieRX=62;ieRZ=-14;ieZoom=.82;ieSetTransform();toastMsg('AB1 floors exploded')};
@@ -536,9 +547,9 @@ ieViewer.addEventListener('pointerdown',e=>{if(e.target.closest('.ieRoom,.ieConn
 ieViewer.addEventListener('pointermove',e=>{if(!ieDrag)return;ieRZ+=(e.clientX-iePX)*.3;ieRX-=(e.clientY-iePY)*.23;ieRX=Math.max(8,Math.min(78,ieRX));iePX=e.clientX;iePY=e.clientY;ieSetTransform()});['pointerup','pointercancel'].forEach(ev=>ieViewer.addEventListener(ev,()=>{ieDrag=false;ieViewer.classList.remove('dragging');ieWorld.classList.remove('noAnim')}));
 ieViewer.addEventListener('wheel',e=>{e.preventDefault();ieZoom+=e.deltaY<0?.045:-.045;ieZoom=Math.max(.52,Math.min(1.18,ieZoom));ieSetTransform()},{passive:false});
 document.getElementById('ieAuto').onclick=()=>{clearInterval(ieAutoTimer);let seq=[-1,0,1,2,3,4],i=0;ieAutoTimer=setInterval(()=>{ieFloor=seq[i];ieApplyFloor();if(ieFloor===4)ieSelectRoom('418',4);i++;if(i>=seq.length){clearInterval(ieAutoTimer);toastMsg('Guided AB1 exploration complete')}},950);toastMsg('Guided exploration started')};
-
+ 
 </script>
-
+ 
 <!-- V9 MOBILE NAVIGATION -->
 <div id="mobileRouteSheet" aria-hidden="true">
   <h3>🧭 Navigate around campus</h3>
@@ -556,10 +567,10 @@ document.getElementById('ieAuto').onclick=()=>{clearInterval(ieAutoTimer);let se
   <button id="mNav"><b>🧭</b><span>Navigate</span></button>
   <button id="mAB1"><b>🏢</b><span>AB1</span></button>
 </nav>
-
+ 
 <!-- MOBILE ROUTE RESULT -->
 <div id="mobileRouteResult" aria-hidden="true"><div class="mRouteCard"><div class="mRouteHead"><div><h3>🧭 Route found</h3><p id="mRouteSub">Campus Orbit schematic navigation</p></div><button class="mRouteClose" id="mRouteClose">×</button></div><div class="mRouteLine" id="mRouteLine"></div><div class="mRouteSteps" id="mRouteSteps"></div><div class="mRouteNote">Route follows the supplied campus layout and road/connection information. It is a prototype route, not a surveyed walking-distance map.</div><div class="mRouteActions"><button id="mRouteMap" class="primary">✦ Show on Map</button><button id="mRouteIndoor">🏢 Open AB1</button></div></div></div>
-
+ 
 <script>
 /* Mobile route result popup */
 function showMobileRouteResult(steps,points){
@@ -575,9 +586,9 @@ function showMobileRouteResult(steps,points){
  const modal=document.getElementById('mobileRouteResult');if(!modal)return;
  document.getElementById('mRouteClose').onclick=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')};
  document.getElementById('mRouteMap').onclick=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');if(typeof openMobile3DCampus==='function')openMobile3DCampus();setTimeout(()=>{if(window.__campusRoute&&typeof setRouteSvg==='function')setRouteSvg(window.__campusRoute.points,'SELECTED ROUTE',accessible)},80)};
- document.getElementById('mRouteIndoor').onclick=()=>{const d=modal.dataset.destination||'';if(d.startsWith('ab1room')){const r=d.replace('ab1room','');const n=+r;const f=r==='418'?4:r==='219'||r==='223'?2:r==='116'?1:Math.min(4,Math.max(0,Math.floor(n/100)));modal.classList.remove('open');openIndoorExplorer(f,r)}else if(d.startsWith('ab1')){modal.classList.remove('open');openIndoorExplorer(4,'418')}else{toastMsg('Select an AB1 destination to open the indoor explorer')}};
+ document.getElementById('mRouteIndoor').onclick=()=>{const d=modal.dataset.destination||'';if(d.startsWith('ab1room')){const r=d.replace('ab1room','');const n=+r;const f=r==='418'?4:r==='219'||r==='223'?2:r==='116'?1:Math.min(4,Math.max(0,Math.floor(n/100)));modal.classList.remove('open');if(typeof window.openMobileAB1==='function'){window.openMobileAB1(f,r)}else{openIndoorExplorer(f,r)}}else if(d.startsWith('ab1')){modal.classList.remove('open');if(typeof window.openMobileAB1==='function'){window.openMobileAB1(4,'418')}else{openIndoorExplorer(4,'418')}}else{toastMsg('Select an AB1 destination to open the indoor explorer')}};
 })();
-
+ 
 /* V9 mobile controller — keeps the V8 desktop logic intact */
 (function(){
   const sheet=document.getElementById('mobileRouteSheet');
@@ -612,7 +623,7 @@ function showMobileRouteResult(steps,points){
   if(search)search.addEventListener('focus',()=>{active('mMap')});
 })();
 </script>
-
+ 
 <!-- V10 MOBILE-FIRST SHELL -->
 <section id="mobileShell" aria-label="Campus Orbit mobile app">
   <header class="mHeader">
@@ -662,8 +673,8 @@ function showMobileRouteResult(steps,points){
  function openMap(){closeOverlays();document.getElementById('mobileMapOverlay').classList.add('open');setTab('map');}
  function openDemo(){closeOverlays();document.getElementById('mobileDemoOverlay').classList.add('open');setTab('demo');}
  function openNav(){setTab('navigate');sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');}
- function openAB1(){setTab('ab1');if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418');}
- function start418(){setTab('navigate');document.getElementById('mFrom').value='gate1';document.getElementById('mTo').value='ab1room418';sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');setTimeout(()=>{if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418')},180);}
+ function openAB1(){setTab('ab1');if(typeof window.openMobileAB1==='function'){window.openMobileAB1(4,'418')}else if(typeof openIndoorExplorer==='function'){openIndoorExplorer(4,'418')}}
+ function start418(){setTab('navigate');document.getElementById('mFrom').value='gate1';document.getElementById('mTo').value='ab1room418';sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');setTimeout(()=>{if(typeof window.openMobileAB1==='function'){window.openMobileAB1(4,'418')}else if(typeof openIndoorExplorer==='function'){openIndoorExplorer(4,'418')}},180);}
  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='map')openMap();else if(a==='demo')openDemo();else if(a==='ab1')openAB1();else if(a==='navigate')openNav();else if(a==='route418')start418();}));
  document.querySelectorAll('.mBottom button').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.tab;if(t==='home'){setTab('home');closeOverlays();sheet.classList.remove('open');document.getElementById('mHomeScroll').scrollTo({top:0,behavior:'smooth'});}else if(t==='map')openMap();else if(t==='demo')openDemo();else if(t==='navigate')openNav();else if(t==='ab1')openAB1();}));
  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>{document.getElementById(b.dataset.close).classList.remove('open');}));
@@ -672,14 +683,15 @@ function showMobileRouteResult(steps,points){
  document.getElementById('mAccess').onclick=()=>{const b=document.getElementById('mAccess');const on=b.dataset.on==='1';b.dataset.on=on?'0':'1';b.textContent='♿ Accessible: '+(on?'OFF':'ON');if(typeof accessible!=='undefined')window.accessible=!on;};
 })();
 </script>
-
-
+ 
+ 
 <script>
 /* Campus Orbit V11 — mobile 3D bridge. Keeps the same real desktop 3D scene, but exposes it as a proper touch-first mobile view. */
 (function(){
   const body=document.body, shell=document.getElementById('mobileShell');
   const back=document.getElementById('mobile3DBack'), original=document.getElementById('mobile3DOriginal'), ab1=document.getElementById('mobile3DAB1');
   const mapOverlay=document.getElementById('mobileMapOverlay');
+  const bar3d=document.getElementById('mobile3DBar'), hint3d=document.getElementById('mobile3DHint');
   function mobile3D(){
     body.classList.add('mobile3DMode');window.__mobile3DActive=true;window.__mobilePanX=0;window.__mobilePanY=0;
     if(shell)shell.style.display='none';
@@ -691,20 +703,36 @@ function showMobileRouteResult(steps,points){
   function leave3D(){
     body.classList.remove('mobile3DMode');window.__mobile3DActive=false;window.__mobilePanX=0;window.__mobilePanY=0;
     if(shell)shell.style.display='flex';
+    if(bar3d)bar3d.style.display='';
+    if(hint3d)hint3d.style.display='';
+    const vb=document.querySelector('.viewBtns');if(vb)vb.style.display='';
     if(typeof view==='function'){rx=54;rz=0;zoom=.78;view()}
   }
   function showOriginal(){
     if(mapOverlay){mapOverlay.classList.add('open');}
   }
+  // Opens the AB1 indoor explorer as its own full-screen mobile mode, independent of the campus 3D "Map" mode.
+  function openMobileAB1(floor,room){
+    body.classList.add('mobile3DMode');window.__mobile3DActive=true;
+    if(shell)shell.style.display='none';
+    if(bar3d)bar3d.style.display='none';
+    if(hint3d)hint3d.style.display='none';
+    const vb=document.querySelector('.viewBtns');if(vb)vb.style.display='none';
+    if(typeof openIndoorExplorer==='function')openIndoorExplorer(floor,room);
+  }
   back?.addEventListener('click',leave3D);
   original?.addEventListener('click',showOriginal);
-  ab1?.addEventListener('click',()=>{leave3D();setTimeout(()=>{if(typeof openIndoorExplorer==='function')openIndoorExplorer(4,'418')},40)});
+  ab1?.addEventListener('click',()=>{openMobileAB1(4,'418')});
   window.openMobile3DCampus=mobile3D;
   window.closeMobile3DCampus=leave3D;
+  window.openMobileAB1=openMobileAB1;
   /* Replace the mobile Map actions with the real interactive 3D campus. */
   document.querySelectorAll('#mobileShell [data-action="map"]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();mobile3D()}));
   document.querySelectorAll('#mobileShell [data-tab="map"]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();mobile3D()}));
 })();
 </script>
-
+ 
 </body></html>
+ 
+
+
